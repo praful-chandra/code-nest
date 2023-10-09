@@ -16,9 +16,6 @@ import { cn } from "@/lib/utils";
 
 const Theme = () => {
   const { mode, setMode } = useTheme();
-
-  console.log({ mode });
-
   return (
     <Menubar className="relative border-none bg-transparent shadow-none">
       <MenubarMenu>
