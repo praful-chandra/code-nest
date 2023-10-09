@@ -15,6 +15,7 @@ const Navbar = () => {
           width={25}
           height={25}
           alt="Code Nest"
+          // className="invert-colors"
         />
 
         <p className="h2-bold font-spaceGrotesk text-dark-100 dark:text-light-900 max-sm:hidden">
