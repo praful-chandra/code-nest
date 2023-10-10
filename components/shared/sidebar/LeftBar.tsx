@@ -5,7 +5,7 @@ import {
   NavSignInBtnDesktop,
   NavSignUpBtnDesktop,
   useGetNavContent,
-} from "./NavContent";
+} from "../navbar/NavContent";
 import { SignedOut } from "@clerk/nextjs";
 
 const LeftBar = () => {
