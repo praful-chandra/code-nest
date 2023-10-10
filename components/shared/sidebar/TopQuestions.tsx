@@ -37,6 +37,7 @@ const TopQuestions = () => {
                 width={20}
                 height={20}
                 alt="Proceed"
+                className="invert-colors"
               />{" "}
             </div>
           </li>
