@@ -1,3 +1,7 @@
+import {
+  DesktopFilters,
+  MobileFilters,
+} from "@/components/Home/homePageFilters";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -20,7 +24,12 @@ const HomePage = () => {
           name="searchQuestions"
           placeHolder="Search for Questions"
         />
-        <div>Filters</div>
+        <div className="hidden max-md:block">
+          <MobileFilters />
+        </div>
+      </div>
+      <div className="mt-7 flex max-md:hidden">
+        <DesktopFilters />
       </div>
     </>
   );
