@@ -1,9 +1,8 @@
-import {
-  DesktopFilters,
-  MobileFilters,
-} from "@/components/Home/homePageFilters";
+import { DesktopFilters } from "@/components/Home/homePageFilters";
+import Filters from "@/components/shared/Filters";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { Button } from "@/components/ui/button";
+import { homePageFilters } from "@/constants/filters";
 import Link from "next/link";
 
 const HomePage = () => {
@@ -25,7 +24,11 @@ const HomePage = () => {
           placeHolder="Search for Questions"
         />
         <div className="hidden max-md:block">
-          <MobileFilters />
+          <Filters
+            filterOptions={homePageFilters}
+            otherClasses="min-h-[56px] sm:min-w-[170px]"
+            containerClasses="hidden max-md:flex"
+          />
         </div>
       </div>
       <div className="mt-7 flex max-md:hidden">
