@@ -51,7 +51,7 @@ const PopularTags = () => {
         {popularTagsData?.map((hotItem) => (
           <li key={hotItem.id} className="mb-8 cursor-pointer last:mb-0">
             <div className="text-dark500_light700 flex items-start justify-between ">
-              <Tag text={hotItem.text} />
+              <Tag href={`tag/${hotItem.id}`} text={hotItem.text} />
               <p className="small-medium text-dark500_light700">
                 {hotItem.count}+
               </p>

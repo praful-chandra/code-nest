@@ -3,3 +3,13 @@ export interface SidebarLink {
   route: string;
   label: string;
 }
+
+export interface DropdownOption {
+  name: string;
+  value: string;
+}
+
+export interface CardTagList {
+  label: string;
+  url: string;
+}
