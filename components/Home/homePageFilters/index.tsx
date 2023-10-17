@@ -7,6 +7,7 @@ export const DesktopFilters = () => {
     <div className="flex gap-3">
       {homePageFilters.map((filter) => (
         <Tag
+          href={`/?filter=${filter.value}`}
           key={filter.value}
           text={filter.name}
           size="large"

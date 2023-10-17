@@ -8,3 +8,8 @@ export interface DropdownOption {
   name: string;
   value: string;
 }
+
+export interface CardTagList {
+  label: string;
+  url: string;
+}

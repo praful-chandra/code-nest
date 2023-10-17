@@ -1,9 +1,10 @@
 import { cn } from "@/lib/utils";
 import React from "react";
-import { Button } from "../ui/button";
+import Link from "next/link";
 
 interface TagProps {
   text: string;
+  href: string;
   size?: "small" | "large";
   uppercase?: boolean;
   active?: boolean;
@@ -12,13 +13,15 @@ interface TagProps {
 
 const Tag = ({
   text,
+  href,
   size = "small",
   uppercase = true,
   active = false,
   variant = "regular",
 }: TagProps) => {
   return (
-    <Button
+    <Link
+      href={href ?? ""}
       className={cn(
         "rounded-md",
         size === "large" ? "px-6 py-3 body-medium" : "subtle-medium px-4 py-2",
@@ -31,7 +34,7 @@ const Tag = ({
       )}
     >
       {text}
-    </Button>
+    </Link>
   );
 };
 

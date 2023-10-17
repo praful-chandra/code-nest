@@ -1,5 +1,6 @@
 import { DesktopFilters } from "@/components/Home/homePageFilters";
 import Filters from "@/components/shared/Filters";
+import { QuestionCard } from "@/components/shared/card";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import { homePageFilters } from "@/constants/filters";
@@ -33,6 +34,28 @@ const HomePage = () => {
       </div>
       <div className="mt-7 flex max-md:hidden">
         <DesktopFilters />
+      </div>
+      <div className="mt-10">
+        <QuestionCard
+          question={{
+            id: "2131239-123123-1231231",
+            title:
+              "The Lightning Component c:LWC_PizzaTracker generated invalid output for field status. Error How to solve this",
+            tags: [
+              { label: "Javascript", url: "/js" },
+              { label: "next.js", url: "/nextjs" },
+              { label: "react", url: "/reactjs" },
+            ],
+            profile: {
+              name: "Shiva",
+              photo: "/assets/images/logo.png",
+            },
+            time: "2 Days ago",
+            views: "12k",
+            answers: "900",
+            votes: "5.2k",
+          }}
+        />
       </div>
     </>
   );
