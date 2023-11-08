@@ -1,18 +1,19 @@
 import React from "react";
 import Image from "next/image";
-import Tag from "../Tag";
+import Tag from "../shared/Tag";
 import { CardTagList } from "@/types";
 import Link from "next/link";
+import { getTimestamp } from "@/lib/utils";
 
 type QuestionCardProps = {
   question: {
     id: string;
     title: string;
     tags: CardTagList[];
-    votes: string;
-    answers: string;
-    views: string;
-    time: string;
+    votes: number;
+    answers: number;
+    views: number;
+    time: Date;
     profile: {
       photo: string;
       name: string;
@@ -23,10 +24,10 @@ type QuestionCardProps = {
 const QuestionCard = ({ question }: QuestionCardProps) => {
   const { id, answers, profile, tags, time, title, views, votes } = question;
   return (
-    <div className="card-wrapper text-dark100_light900 w-full rounded-xl p-11 font-inter">
+    <div className="card-wrapper text-dark100_light900 mb-6 w-full rounded-xl p-11 font-inter last:mb-0">
       {/* MOBILE TIME  */}
       <p className="subtle-regular text-dark400_light700 line-clamp-1 sm:hidden">
-        {time}
+        {getTimestamp(time)}
       </p>
       {/* TITLE */}
       <Link href={`/question/${id}`}>
@@ -50,7 +51,10 @@ const QuestionCard = ({ question }: QuestionCardProps) => {
             alt="display pic"
           />
           <p className="body-medium mx-1">{profile?.name} </p>
-          <p className="small-regular max-sm:hidden"> &#9679; asked {time}</p>
+          <p className="small-regular max-sm:hidden">
+            {" "}
+            &#9679; asked {getTimestamp(time)}
+          </p>
         </div>
         {/* VOTES - ANSWRS - VIEWS */}
         <div className="flex flex-wrap items-center justify-start gap-3 max-sm:mt-2">
