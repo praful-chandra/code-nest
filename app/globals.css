@@ -6,6 +6,7 @@
 
 body {
   font-family: "Inter", sans-serif;
+  @apply font-inter;
 }
 
 @layer utilities {

@@ -1,4 +1,4 @@
-import Question from "@/components/forms/Question";
+import Question from "@/components/forms/askAQuestionForm";
 import React from "react";
 
 const Page = () => {
