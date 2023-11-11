@@ -72,7 +72,7 @@ const HomePage = () => {
         <DesktopFilters />
       </div>
       <div className="mt-10">
-        {!questions?.length ? (
+        {questions?.length ? (
           questions.map((que) => <QuestionCard question={que} key={que.id} />)
         ) : (
           <NoResult
