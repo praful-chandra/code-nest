@@ -9,7 +9,7 @@ export const DesktopFilters = () => {
         <Tag
           href={`/?filter=${filter.value}`}
           key={filter.value}
-          text={filter.name}
+          text={filter.label}
           size="large"
           uppercase={false}
           active={filter.value === "recommended"}

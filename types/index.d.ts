@@ -5,7 +5,7 @@ export interface SidebarLink {
 }
 
 export interface DropdownOption {
-  name: string;
+  label: string;
   value: string;
 }
 
@@ -13,3 +13,17 @@ export interface CardTagList {
   label: string;
   url: string;
 }
+
+// -----------  FOR REACT SELECT ---------------------------------
+export type InputAction =
+  | "set-value"
+  | "input-change"
+  | "input-blur"
+  | "menu-close";
+
+export interface InputActionMeta {
+  action: InputAction;
+  /** The previous value of the search input. */
+  prevInputValue: string;
+}
+// -----------  FOR REACT SELECT --------------------------------- ///

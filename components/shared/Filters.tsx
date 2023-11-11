@@ -35,7 +35,7 @@ const Filters = ({
           <SelectGroup>
             {filterOptions.map((item) => (
               <SelectItem key={item.value} value={item.value}>
-                {item.name}
+                {item.label}
               </SelectItem>
             ))}
           </SelectGroup>

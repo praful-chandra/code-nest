@@ -8,8 +8,9 @@ import { UseFormReturn } from "react-hook-form";
 import {
   TextInput,
   WYSWYGInput,
-  MultiSelect,
+  AsyncSelect,
 } from "@/components/shared/formFields";
+import { DropdownOption } from "@/types";
 
 type Props = {
   formMethods: UseFormReturn<
@@ -21,6 +22,20 @@ type Props = {
 };
 
 const QuestionForm = ({ formMethods, onSubmit }: Props) => {
+  const onTagInputChange = async (
+    inputVal: string,
+    callback: (options: DropdownOption[]) => void
+  ) => {
+    console.log(inputVal);
+
+    if (inputVal?.length >= 3) {
+      // TODO: call API and return the values
+      return [{ label: inputVal, value: inputVal }];
+    }
+
+    return [];
+  };
+
   return (
     <Form {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)} className="space-y-8">
@@ -36,11 +51,14 @@ const QuestionForm = ({ formMethods, onSubmit }: Props) => {
           description="Introduce the problem and expand on what you put in the title. Minimum 20 characters."
           required
         />
-        <MultiSelect
+        <AsyncSelect
+          isMulti
           label="Tags"
           name="tags"
           description="Add up to 5 tags to describe what your question is about. Start typing to see suggestions."
           required
+          placeholder="Enter 3 or more characters to search"
+          onInputChange={onTagInputChange}
         />
         <Button type="submit">Submit</Button>
       </form>
