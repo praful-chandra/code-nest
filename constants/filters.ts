@@ -1,6 +1,6 @@
 export const homePageFilters = [
-  { name: "Newest", value: "newest" },
-  { name: "Recommended", value: "recommended" },
-  { name: "Frequent", value: "frequent" },
-  { name: "Unanswered", value: "unanswered" },
+  { label: "Newest", value: "newest" },
+  { label: "Recommended", value: "recommended" },
+  { label: "Frequent", value: "frequent" },
+  { label: "Unanswered", value: "unanswered" },
 ];
