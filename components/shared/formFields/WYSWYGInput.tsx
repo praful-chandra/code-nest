@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   FormControl,
   FormDescription,
@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/form";
 import { useFormContext } from "react-hook-form";
 import { Editor } from "@tinymce/tinymce-react";
+import Loader from "../Loader";
 
 type Props = {
   name: string;
@@ -18,6 +19,7 @@ type Props = {
 };
 
 const WyswygInput = ({ name, label, required = false, description }: Props) => {
+  const [isEditorInit, setIsEditorInit] = useState(false);
   const formMethods = useFormContext();
 
   const editorRef = useRef(null);
@@ -33,9 +35,15 @@ const WyswygInput = ({ name, label, required = false, description }: Props) => {
           </FormLabel>
           <FormControl>
             <>
+              {!isEditorInit && (
+                <div className="flex-center h-24">
+                  <Loader />
+                </div>
+              )}
               <Editor
                 apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_KEY}
                 onInit={(evt, editor) => {
+                  setIsEditorInit(true);
                   // @ts-ignore
                   return (editorRef.current = editor);
                 }}
