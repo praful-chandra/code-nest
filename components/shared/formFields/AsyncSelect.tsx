@@ -23,6 +23,9 @@ type Props = {
     inputVal: string,
     callback: (options: DropdownOption[]) => void
   ) => Promise<DropdownOption[]>;
+  noOptionComp?:
+    | ((obj: { inputValue: string }) => React.ReactNode | string)
+    | undefined;
 };
 
 const MultiSelect = ({
@@ -34,6 +37,7 @@ const MultiSelect = ({
   isOptionsLoading = false,
   isMulti = false,
   onInputChange,
+  noOptionComp,
 }: Props) => {
   const formMethods = useFormContext();
 
@@ -60,6 +64,7 @@ const MultiSelect = ({
               value={field.value}
               onChange={field.onChange}
               isLoading={isOptionsLoading}
+              noOptionsMessage={noOptionComp}
             />
           </FormControl>
           {description && (

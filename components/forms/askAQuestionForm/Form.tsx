@@ -29,11 +29,34 @@ const QuestionForm = ({ formMethods, onSubmit }: Props) => {
     console.log(inputVal);
 
     if (inputVal?.length >= 3) {
+      if (inputVal === "dnd") {
+        return [];
+      }
       // TODO: call API and return the values
       return [{ label: inputVal, value: inputVal }];
     }
 
     return [];
+  };
+
+  const noTagComponent = (inp: { inputValue: string }) => {
+    return inp?.inputValue?.length >= 3 ? (
+      <Button
+        onClick={(e) => {
+          e.preventDefault();
+          const existingTags = formMethods.getValues("tags");
+          formMethods.setValue("tags", [
+            ...existingTags,
+            { value: "dnd", label: "dnd" },
+          ]);
+        }}
+      >
+        {" "}
+        {`+ Add ${inp.inputValue}`}{" "}
+      </Button>
+    ) : (
+      "---"
+    );
   };
 
   return (
@@ -59,6 +82,7 @@ const QuestionForm = ({ formMethods, onSubmit }: Props) => {
           required
           placeholder="Enter 3 or more characters to search"
           onInputChange={onTagInputChange}
+          noOptionComp={noTagComponent}
         />
         <Button type="submit">Submit</Button>
       </form>
