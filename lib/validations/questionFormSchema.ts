@@ -7,7 +7,7 @@ export default z.object({
     .max(130, "Title must not be more than 130 characters."),
   description: z
     .string()
-    .min(100, "Description must have atleast 100 characters."),
+    .min(20, "Description must have atleast 20 characters."),
   tags: z
     .array(
       z.object({
