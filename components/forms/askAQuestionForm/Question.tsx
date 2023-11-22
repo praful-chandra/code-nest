@@ -5,10 +5,12 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { questionFormSchema } from "@/lib/validations";
 import QuestionForm from "./Form";
+import { createQuestion } from "@/lib/actions/question.action";
 
 const Question = () => {
   const onSubmit = (vals: z.infer<typeof questionFormSchema>) => {
     console.log(vals);
+    createQuestion();
   };
 
   const questionForm = useForm<z.infer<typeof questionFormSchema>>({
