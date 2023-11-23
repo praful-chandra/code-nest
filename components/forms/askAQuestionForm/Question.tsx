@@ -10,13 +10,16 @@ import { createQuestion } from "@/lib/actions/question.action";
 const Question = () => {
   const onSubmit = (vals: z.infer<typeof questionFormSchema>) => {
     console.log(vals);
-    createQuestion();
+    createQuestion(vals);
   };
 
   const questionForm = useForm<z.infer<typeof questionFormSchema>>({
     resolver: zodResolver(questionFormSchema),
     defaultValues: {
       title: "",
+      description: "",
+      tags: [],
+      author: "",
     },
     reValidateMode: "onBlur",
     mode: "all",
