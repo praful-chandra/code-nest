@@ -26,8 +26,6 @@ const QuestionForm = ({ formMethods, onSubmit }: Props) => {
     inputVal: string,
     callback: (options: DropdownOption[]) => void
   ) => {
-    console.log(inputVal);
-
     if (inputVal?.length >= 3) {
       if (inputVal === "dnd") {
         return [];

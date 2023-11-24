@@ -76,6 +76,7 @@ const WyswygInput = ({ name, label, required = false, description }: Props) => {
                     "removeformat",
                   content_style: "body { font-family:Inter; font-size:16px }",
                 }}
+                id={`WYSIWYG ${name}`}
               />
             </>
           </FormControl>
