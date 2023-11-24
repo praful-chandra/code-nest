@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   FormControl,
   FormDescription,
@@ -40,41 +40,48 @@ const MultiSelect = ({
   noOptionComp,
 }: Props) => {
   const formMethods = useFormContext();
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => setIsMounted(true), []);
 
   return (
     <FormField
       control={formMethods.control}
       name={name}
-      render={({ field }) => (
-        <FormItem className="font-inter">
-          <FormLabel className="paragraph-semibold text-dark400_light800 ">
-            {label} {required && <span className="text-red-500">*</span>}
-          </FormLabel>
-          <FormControl>
-            {/* <Input
-              className="background-light800_dark300 text-dark300_light800 paragraph-regular border-light-800 p-4 dark:border-dark-400"
-              onChange={onInputChange}
-            /> */}
+      render={({ field }) =>
+        isMounted ? (
+          <FormItem className="font-inter">
+            <FormLabel className="paragraph-semibold text-dark400_light800 ">
+              {label} {required && <span className="text-red-500">*</span>}
+            </FormLabel>
+            <FormControl>
+              {/* <Input
+            className="background-light800_dark300 text-dark300_light800 paragraph-regular border-light-800 p-4 dark:border-dark-400"
+            onChange={onInputChange}
+          /> */}
 
-            <AsyncSelect
-              isMulti={isMulti}
-              cacheOptions
-              loadOptions={onInputChange}
-              placeholder={placeholder}
-              value={field.value}
-              onChange={field.onChange}
-              isLoading={isOptionsLoading}
-              noOptionsMessage={noOptionComp}
-            />
-          </FormControl>
-          {description && (
-            <FormDescription className="body-regular text-xs text-light-500">
-              {description}
-            </FormDescription>
-          )}
-          <FormMessage className="text-xs text-red-500" />
-        </FormItem>
-      )}
+              <AsyncSelect
+                isMulti={isMulti}
+                cacheOptions
+                loadOptions={onInputChange}
+                placeholder={placeholder}
+                value={field.value}
+                onChange={field.onChange}
+                isLoading={isOptionsLoading}
+                noOptionsMessage={noOptionComp}
+                id={`AsyncSelect ${name}`}
+              />
+            </FormControl>
+            {description && (
+              <FormDescription className="body-regular text-xs text-light-500">
+                {description}
+              </FormDescription>
+            )}
+            <FormMessage className="text-xs text-red-500" />
+          </FormItem>
+        ) : (
+          <></>
+        )
+      }
     />
   );
 };
