@@ -7,9 +7,12 @@ import { questionFormSchema } from "@/lib/validations";
 import QuestionForm from "./Form";
 import { createQuestion } from "@/lib/actions/question.action";
 
-const Question = () => {
+type Props = {
+  currentProfile: string;
+};
+
+const Question = ({ currentProfile }: Props) => {
   const onSubmit = (vals: z.infer<typeof questionFormSchema>) => {
-    console.log(vals);
     createQuestion(vals);
   };
 
@@ -19,7 +22,7 @@ const Question = () => {
       title: "",
       description: "",
       tags: [],
-      author: "",
+      author: JSON.parse(currentProfile),
     },
     reValidateMode: "onBlur",
     mode: "all",

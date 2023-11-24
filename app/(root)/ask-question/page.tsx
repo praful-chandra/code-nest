@@ -1,27 +1,20 @@
 import Question from "@/components/forms/askAQuestionForm";
-import { getUserById } from "@/lib/actions/user.action";
-import { auth } from "@clerk/nextjs";
-import console from "console";
-import { redirect } from "next/navigation";
+import { SignedIn } from "@clerk/nextjs";
 import React from "react";
+import { getCurrentProfile } from "@/lib/currentProfile";
 
 const Page = async () => {
-  const { userId } = auth();
-
-  if (!userId) {
-    redirect("/signin");
-  }
-
-  const mongoUser = await getUserById({ userId });
-  console.log({ mongoUser });
+  const currentProfile = await getCurrentProfile();
 
   return (
-    <div>
-      <h1 className="h1-bold text-dark100_light900 ">Ask a Question</h1>
-      <div className="mt-9">
-        <Question />
+    <SignedIn>
+      <div>
+        <h1 className="h1-bold text-dark100_light900 ">Ask a Question</h1>
+        <div className="mt-9">
+          <Question currentProfile={JSON.stringify(currentProfile)} />
+        </div>
       </div>
-    </div>
+    </SignedIn>
   );
 };
 
