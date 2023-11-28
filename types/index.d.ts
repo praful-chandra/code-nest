@@ -9,11 +9,6 @@ export interface DropdownOption {
   value: string;
 }
 
-export interface CardTagList {
-  label: string;
-  url: string;
-}
-
 // -----------  FOR REACT SELECT ---------------------------------
 export type InputAction =
   | "set-value"

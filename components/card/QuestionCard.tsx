@@ -1,42 +1,36 @@
 import React from "react";
 import Image from "next/image";
 import Tag from "../shared/Tag";
-import { CardTagList } from "@/types";
+import { QuestionType } from "@/types/primitive";
 import Link from "next/link";
-import { getTimestamp } from "@/lib/utils";
+import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 
 type QuestionCardProps = {
-  question: {
-    id: string;
-    title: string;
-    tags: CardTagList[];
-    votes: number;
-    answers: number;
-    views: number;
-    time: Date;
-    profile: {
-      photo: string;
-      name: string;
-    };
-  };
+  question: QuestionType;
 };
 
 const QuestionCard = ({ question }: QuestionCardProps) => {
-  const { id, answers, profile, tags, time, title, views, votes } = question;
+  const { _id, answers, author, tags, createdAt, title, views, upVotes } =
+    question;
   return (
     <div className="card-wrapper text-dark100_light900 mb-6 w-full rounded-xl p-11 font-inter last:mb-0">
       {/* MOBILE TIME  */}
       <p className="subtle-regular text-dark400_light700 line-clamp-1 sm:hidden">
-        {getTimestamp(time)}
+        {getTimestamp(createdAt)}
       </p>
       {/* TITLE */}
-      <Link href={`/question/${id}`}>
+      <Link href={`/question/${_id}`}>
         <h3 className="h3-semibold line-clamp-1">{title}</h3>
       </Link>
       {/* TAGS */}
       <div className="mt-3 flex flex-wrap gap-2">
         {tags.map((t) => (
-          <Tag href={t.url} key={t.url} text={t.label} variant="soft" />
+          <Tag
+            href={`/tags/${t._id}`}
+            key={t.name}
+            text={t.name}
+            variant="soft"
+          />
         ))}
       </div>
       {/* INFO */}
@@ -44,16 +38,16 @@ const QuestionCard = ({ question }: QuestionCardProps) => {
         {/* PROFILE */}
         <div className="flex  items-center justify-start ">
           <Image
-            src={profile?.photo}
+            src={author?.avatar}
             width={20}
             height={20}
             className="rounded-full"
             alt="display pic"
           />
-          <p className="body-medium mx-1">{profile?.name} </p>
+          <p className="body-medium mx-1">{author?.name} </p>
           <p className="small-regular max-sm:hidden">
             {" "}
-            &#9679; asked {getTimestamp(time)}
+            &#9679; asked {getTimestamp(createdAt)}
           </p>
         </div>
         {/* VOTES - ANSWRS - VIEWS */}
@@ -66,7 +60,9 @@ const QuestionCard = ({ question }: QuestionCardProps) => {
               alt="Likes"
             />
             <p>
-              <span className="small-medium mr-1">{votes}</span>
+              <span className="small-medium mr-1">
+                {formatAndDivideNumber(upVotes?.length)}
+              </span>
               <span className="small-regular">Votes</span>
             </p>
           </div>
@@ -79,7 +75,9 @@ const QuestionCard = ({ question }: QuestionCardProps) => {
               alt="Comments"
             />
             <p>
-              <span className="small-medium mr-1">{answers}</span>
+              <span className="small-medium mr-1">
+                {formatAndDivideNumber(answers?.length)}
+              </span>
               <span className="small-regular">Answers</span>
             </p>
           </div>
@@ -92,7 +90,9 @@ const QuestionCard = ({ question }: QuestionCardProps) => {
               alt="Views"
             />
             <p>
-              <span className="small-medium mr-1">{views}</span>
+              <span className="small-medium mr-1">
+                {formatAndDivideNumber(views)}
+              </span>
               <span className="small-regular">Views</span>
             </p>
           </div>

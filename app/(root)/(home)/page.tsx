@@ -6,43 +6,14 @@ import { Button } from "@/components/ui/button";
 import { homePageFilters } from "@/constants/filters";
 import Link from "next/link";
 import NoResult from "@/components/shared/NoResult";
+import { getQuestions } from "@/lib/actions/question.action";
+import { QuestionType } from "@/types/primitive";
 
-const questions = [
-  {
-    id: "2131239-123123-1231231",
-    title:
-      "The Lightning Component c:LWC_PizzaTracker generated invalid output for field status. Error How to solve this",
-    tags: [
-      { label: "Javascript", url: "/js" },
-      { label: "next.js", url: "/nextjs" },
-      { label: "react", url: "/reactjs" },
-    ],
-    profile: {
-      name: "Shiva",
-      photo: "/assets/images/logo.png",
-    },
-    time: new Date("2023-09-01T12:00:00.000Z"),
-    views: 12000,
-    answers: 900,
-    votes: 5200,
-  },
-  {
-    id: "2131239-123123-12322222",
-    title:
-      "Would it be appropriate to point out an error in another paper during a referee report?",
-    tags: [{ label: "Javascript", url: "/js" }],
-    profile: {
-      name: "Shiva",
-      photo: "/assets/images/logo.png",
-    },
-    time: new Date("2021-09-02T10:30:00.000Z"),
-    views: 9000,
-    answers: 877,
-    votes: 3000,
-  },
-];
+const HomePage = async () => {
+  const questions = (await getQuestions({})) as unknown as {
+    questions: QuestionType[];
+  };
 
-const HomePage = () => {
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -72,8 +43,10 @@ const HomePage = () => {
         <DesktopFilters />
       </div>
       <div className="mt-10">
-        {questions?.length ? (
-          questions.map((que) => <QuestionCard question={que} key={que.id} />)
+        {questions?.questions?.length ? (
+          questions?.questions.map((que) => (
+            <QuestionCard question={que} key={que._id} />
+          ))
         ) : (
           <NoResult
             title="There’s no question to show"
