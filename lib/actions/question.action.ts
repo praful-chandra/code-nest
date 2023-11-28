@@ -4,6 +4,8 @@ import Question from "@/database/question.model";
 import { connectToDatabase } from "../mongoose";
 import { questionFormSchema } from "../validations";
 import tagModel from "@/database/tag.model";
+import { GetQuestionsParams } from "./shared.types";
+import userModel from "@/database/user.model";
 
 export async function createQuestion(newQuestionData: unknown) {
   try {
@@ -52,5 +54,24 @@ export async function createQuestion(newQuestionData: unknown) {
     });
   } catch (err) {
     console.log("ERROR_CREATE_QUESTION__:", err);
+  }
+}
+
+export async function getQuestions(params: GetQuestionsParams) {
+  try {
+    connectToDatabase();
+
+    const questions = await Question.find({})
+      .populate({
+        path: "tags",
+        model: tagModel,
+      })
+      .populate({ path: "author", model: userModel })
+      .sort({ createdAt: -1 });
+
+    return { questions };
+  } catch (err) {
+    console.log("ERROR_GET_QUESTIONS:", err);
+    throw err;
   }
 }
