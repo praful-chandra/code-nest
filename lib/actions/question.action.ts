@@ -6,6 +6,7 @@ import { questionFormSchema } from "../validations";
 import tagModel from "@/database/tag.model";
 import { GetQuestionsParams } from "./shared.types";
 import userModel from "@/database/user.model";
+import { revalidatePath } from "next/cache";
 
 export async function createQuestion(newQuestionData: unknown) {
   try {
@@ -25,7 +26,7 @@ export async function createQuestion(newQuestionData: unknown) {
     }
 
     const {
-      data: { description, tags, title, author },
+      data: { description, tags, title, author, path },
     } = validationResult;
 
     const newQuestion = await Question.create({
@@ -52,6 +53,8 @@ export async function createQuestion(newQuestionData: unknown) {
         tags: { $each: tagDocuments },
       },
     });
+
+    revalidatePath(path);
   } catch (err) {
     console.log("ERROR_CREATE_QUESTION__:", err);
   }

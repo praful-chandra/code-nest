@@ -18,4 +18,5 @@ export default z.object({
     .min(1, "There must be atleast one tag.")
     .max(3, "There can only be 3 tags at most."),
   author: z.string().min(1, "Author is required"),
+  path: z.string().min(1, "Path is required"),
 });
