@@ -13,6 +13,8 @@ export interface IUser extends Document {
   joinedDate: Date;
   questions: Schema.Types.ObjectId[];
   saved: Schema.Types.ObjectId[];
+  isDeleted?: boolean;
+  deletedOn?: Date;
 }
 
 const UserSchema = new Schema({
@@ -52,6 +54,14 @@ const UserSchema = new Schema({
     default: Date.now,
   },
   questions: [{ type: Schema.Types.ObjectId, ref: "Question" }],
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
+  deletedOn: {
+    type: Date,
+    default: null,
+  },
 });
 
 export default models.User || model("User", UserSchema);
