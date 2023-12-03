@@ -57,6 +57,7 @@ export async function createQuestion(newQuestionData: unknown) {
     revalidatePath(path);
   } catch (err) {
     console.log("ERROR_CREATE_QUESTION__:", err);
+    throw err;
   }
 }
 
