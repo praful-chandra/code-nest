@@ -21,6 +21,7 @@ const UserSchema = new Schema({
   clerkId: {
     type: String,
     required: true,
+    unique: true,
   },
   name: {
     type: String,
@@ -33,6 +34,7 @@ const UserSchema = new Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
   },
   bio: {
     type: String,

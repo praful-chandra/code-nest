@@ -18,9 +18,11 @@ export interface AuthorType {
   location: string;
   portfolioWebsite: string;
   reputation: number;
-  joinedDate: string;
+  joinedDate: Date;
   questions: string[]; // these are question IDs asked by the author
   saved: string[]; // these are question IDs saved by the author
+  isDeleted: boolean;
+  deletedOn?: Date;
 }
 
 export interface AnswerType {

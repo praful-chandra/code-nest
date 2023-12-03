@@ -38,13 +38,22 @@ const QuestionCard = ({ question }: QuestionCardProps) => {
         {/* PROFILE */}
         <div className="flex  items-center justify-start ">
           <Image
-            src={author?.avatar}
+            src={
+              author?.isDeleted
+                ? "/assets/images/defaultUser.png"
+                : author?.avatar
+            }
             width={20}
             height={20}
             className="rounded-full"
             alt="display pic"
           />
-          <p className="body-medium mx-1">{author?.name} </p>
+          <p className="body-medium mx-1">
+            {author?.name}
+            <span className="small-regular">
+              {author?.isDeleted && `(Deleted)`}{" "}
+            </span>
+          </p>
           <p className="small-regular max-sm:hidden">
             {" "}
             &#9679; asked {getTimestamp(createdAt)}

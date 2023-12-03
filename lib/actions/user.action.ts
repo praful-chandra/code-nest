@@ -60,9 +60,6 @@ export async function deleteUser(clerkId: string) {
       {
         isDeleted: true,
         deletedOn: Date.now(),
-      },
-      {
-        new: true,
       }
     );
 
