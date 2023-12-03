@@ -27,11 +27,16 @@ const Question = ({ currentProfile }: Props) => {
       title: "",
       description: "",
       tags: [],
-      author: JSON.parse(currentProfile)?._id,
+      author: JSON.parse(currentProfile),
       path: pathname,
     },
     reValidateMode: "onBlur",
     mode: "all",
+  });
+
+  console.log({
+    err: questionForm.formState.errors,
+    vals: questionForm.watch(),
   });
 
   return (

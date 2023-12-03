@@ -35,6 +35,10 @@ export async function createQuestion(newQuestionData: unknown) {
       author,
     });
 
+    await userModel.findByIdAndUpdate(author, {
+      $push: { questions: newQuestion._id },
+    });
+
     const tagDocuments = [];
 
     // create or get existing tag
