@@ -49,10 +49,10 @@ const QuestionCard = ({ question }: QuestionCardProps) => {
             alt="display pic"
           />
           <p className="body-medium mx-1">
-            {author?.name}
-            <span className="small-regular">
-              {author?.isDeleted && `(Deleted)`}{" "}
-            </span>
+            {author?.name}{" "}
+            {author?.isDeleted && (
+              <span className="small-regular">(Deleted)</span>
+            )}{" "}
           </p>
           <p className="small-regular max-sm:hidden">
             {" "}

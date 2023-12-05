@@ -62,6 +62,10 @@ export async function deleteUser(clerkId: string) {
       {
         isDeleted: true,
         deletedOn: Date.now(),
+        avatar: "/assets/images/defaultUser.png",
+      },
+      {
+        new: true,
       }
     );
 
