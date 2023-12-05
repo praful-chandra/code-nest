@@ -59,7 +59,7 @@ export async function POST(req: Request) {
   try {
     switch (eventType) {
       case "user.created": {
-        const newMongoUser = createUser({
+        const newMongoUser = await createUser({
           clerkId: id,
           email: email_addresses[0].email_address,
           name: `${first_name}${last_name ? ` ${last_name}` : ""}`,
@@ -71,7 +71,7 @@ export async function POST(req: Request) {
       }
 
       case "user.updated": {
-        const updatedMongoUser = updateUser({
+        const updatedMongoUser = await updateUser({
           clerkId: id,
           updateData: {
             email: email_addresses[0].email_address,
@@ -85,7 +85,7 @@ export async function POST(req: Request) {
       }
 
       case "user.deleted": {
-        const deletedMongoUser = deleteUser(id);
+        const deletedMongoUser = await deleteUser(id);
 
         return NextResponse.json({ message: "OK", user: deletedMongoUser });
       }
