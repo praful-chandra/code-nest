@@ -3,7 +3,16 @@ import LocalSearch from "@/components/shared/search/LocalSearch";
 import { communityFilters } from "@/constants/filters";
 import React from "react";
 
-const Page = () => {
+const Page = async () => {
+  const myPromise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log("Hi community");
+      resolve("ok");
+    }, 2000);
+  });
+
+  await myPromise;
+
   return (
     <>
       <h1 className="h1-bold text-dark100_light900">Community</h1>
