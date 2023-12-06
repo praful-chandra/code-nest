@@ -9,6 +9,7 @@ interface TagProps {
   uppercase?: boolean;
   active?: boolean;
   variant?: "regular" | "soft";
+  disabled?: boolean;
 }
 
 const Tag = ({
@@ -18,6 +19,7 @@ const Tag = ({
   uppercase = true,
   active = false,
   variant = "regular",
+  disabled = false,
 }: TagProps) => {
   return (
     <Link
@@ -32,6 +34,7 @@ const Tag = ({
           ? "bg-primary-100 dark:bg-dark-400 text-primary-500"
           : "background-light800_dark300"
       )}
+      aria-disabled={disabled}
     >
       {text}
     </Link>

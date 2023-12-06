@@ -7,7 +7,7 @@ export interface TagType {
   questions: string[]; // these are question IDs associated with this tag
 }
 
-export interface AuthorType {
+export interface UserType {
   _id: string;
   clerkId: string;
   name: string;
@@ -37,7 +37,7 @@ export interface QuestionType {
   views: number;
   upVotes: string[]; // these are user IDs who upvoted
   downVotes: string[]; // these are user IDs who downvoted
-  author: AuthorType;
+  author: UserType;
   answers: AnswerType[];
   __v: number;
   createdAt: Date;

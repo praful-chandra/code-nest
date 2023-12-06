@@ -34,7 +34,11 @@ const Filters = ({
         <SelectContent>
           <SelectGroup>
             {filterOptions.map((item) => (
-              <SelectItem key={item.value} value={item.value}>
+              <SelectItem
+                key={item.value}
+                value={item.value}
+                className="text-dark500_light700"
+              >
                 {item.label}
               </SelectItem>
             ))}
