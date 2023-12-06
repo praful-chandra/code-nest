@@ -15,7 +15,7 @@ const Page = async () => {
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearch
           name="searchQuestions"
-          placeHolder="Search for Questions"
+          placeHolder="Search for Amazing community members"
         />
         <div className="">
           <Filters

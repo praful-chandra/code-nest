@@ -27,6 +27,12 @@ export interface FetchAllUserProps {
   flter?: string;
   searchQuery?: string;
 }
+export interface FetchAllTagsProps {
+  page?: number;
+  pageSize?: number;
+  flter?: string;
+  searchQuery?: string;
+}
 
 export interface FetchUserTagsProps {
   userId?: string;

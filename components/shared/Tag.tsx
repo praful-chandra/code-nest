@@ -25,7 +25,7 @@ const Tag = ({
     <Link
       href={href ?? ""}
       className={cn(
-        "rounded-md",
+        "rounded-md w-fit",
         size === "large" ? "px-6 py-3 body-medium" : "subtle-medium px-4 py-2",
         uppercase ? "uppercase" : "",
         variant === "soft" && "text-light400_light500",

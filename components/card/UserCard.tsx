@@ -18,13 +18,15 @@ const UserCard = async ({ user }: UserCardProps) => {
     >
       <article className="background-light900_dark200 light-border flex w-full flex-col items-center justify-center rounded-2xl border p-8">
         <div className="flex-center flex-col">
-          <Image
-            src={user?.avatar}
-            width={100}
-            height={100}
-            alt={`${user?.name} avatar`}
-            className="rounded-full"
-          />
+          <div className="h-[100px] w-[100px]">
+            <Image
+              src={user?.avatar}
+              width={100}
+              height={100}
+              alt={`${user?.name} avatar`}
+              className="rounded-full"
+            />
+          </div>
           <p className="text-dark200_light900 h3-bold mt-4">{user?.name}</p>
           <p className="body-regular text-dark500_light500 mt-2">
             @{user?.userName}
