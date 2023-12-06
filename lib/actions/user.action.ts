@@ -2,7 +2,11 @@
 
 import { connectToDatabase } from "../mongoose";
 import User from "@/database/user.model";
-import { CreateUserParams, UpdateUserParams } from "./shared.types";
+import {
+  CreateUserParams,
+  FetchAllUserProps,
+  UpdateUserParams,
+} from "./shared.types";
 import { revalidatePath } from "next/cache";
 
 export async function getUserById(params: { userId: string }) {
@@ -78,3 +82,16 @@ export async function deleteUser(clerkId: string) {
     throw err;
   }
 }
+
+export const fetchAllUser = async (props: FetchAllUserProps) => {
+  try {
+    connectToDatabase();
+
+    const allUsers = await User.find({ createdAt: -1, isDeleted: false });
+
+    return allUsers;
+  } catch (err) {
+    console.log("ERROR_FETCH_ALL_USER_ACTION", err);
+    throw err;
+  }
+};

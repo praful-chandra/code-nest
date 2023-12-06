@@ -20,3 +20,14 @@ export interface UpdateUserParams {
   updateData: Partial<IUser>;
   path: string;
 }
+
+export interface FetchAllUserProps {
+  page?: number;
+  pageSize?: number;
+  flter?: string;
+  searchQuery?: string;
+}
+
+export interface FetchUserTagsProps {
+  userId?: string;
+}

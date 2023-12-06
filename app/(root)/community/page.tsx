@@ -1,18 +1,14 @@
+import { UserCard } from "@/components/card";
 import Filters from "@/components/shared/Filters";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { communityFilters } from "@/constants/filters";
+import { fetchAllUser } from "@/lib/actions/user.action";
+import { UserType } from "@/types/primitive";
+import Link from "next/link";
 import React from "react";
 
 const Page = async () => {
-  const myPromise = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      console.log("Hi community");
-      resolve("ok");
-    }, 2000);
-  });
-
-  await myPromise;
-
+  const allUsers: UserType[] = await fetchAllUser({});
   return (
     <>
       <h1 className="h1-bold text-dark100_light900">Community</h1>
@@ -28,6 +24,19 @@ const Page = async () => {
           />
         </div>
       </div>
+
+      <section className="mt-12 flex flex-wrap gap-4">
+        {allUsers.length > 0 ? (
+          allUsers.map((user) => <UserCard key={user._id} user={user} />)
+        ) : (
+          <div className="paragraph-regular text-dark200_light800 mx-auto max-w-4xl text-center">
+            <p>No users yet</p>
+            <Link href="/signup" className="mt-2 font-bold text-accent-blue">
+              Join to be the first!
+            </Link>
+          </div>
+        )}
+      </section>
     </>
   );
 };
