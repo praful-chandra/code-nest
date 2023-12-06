@@ -1,11 +1,16 @@
-import Link from "next/link";
+import NoResult from "@/components/shared/NoResult";
 
-export default function NotFound() {
+const Loading = () => {
   return (
-    <div>
-      <h2>Not Found</h2>
-      <p>Could not find requested resource</p>
-      <Link href="/">Return Home</Link>
+    <div className="flex-center h-[100vh] w-full">
+      <NoResult
+        content="Seems like you have reached a dead-end"
+        title="Oooopsss..."
+        linkText="Go home"
+        link="/"
+      />
     </div>
   );
-}
+};
+
+export default Loading;

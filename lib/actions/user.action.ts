@@ -87,7 +87,11 @@ export const fetchAllUser = async (props: FetchAllUserProps) => {
   try {
     connectToDatabase();
 
-    const allUsers = await User.find({ createdAt: -1, isDeleted: false });
+    const { pageSize = 10 } = props;
+
+    const allUsers = await User.find({ createdAt: -1, isDeleted: false }).limit(
+      pageSize
+    );
 
     return allUsers;
   } catch (err) {

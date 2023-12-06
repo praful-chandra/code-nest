@@ -10,3 +10,10 @@ export const communityFilters = [
   { label: "Old Users", value: "old_users" },
   { label: "Top Contributors", value: "top_contributors" },
 ];
+
+export const tagFilters = [
+  { label: "Popular", value: "popular" },
+  { label: "Recent", value: "recent" },
+  { label: "label", value: "name" },
+  { label: "Old", value: "old" },
+];
