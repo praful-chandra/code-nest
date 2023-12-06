@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
-import React from "react";
+import React, { useState } from "react";
 
 type LocalSearchProp = {
   name: string;
@@ -19,6 +19,7 @@ const LocalSearch = ({
   className,
   iconPosition = "left",
 }: LocalSearchProp) => {
+  const [searchVal, setSetsearchVal] = useState("");
   return (
     <div
       className={cn(
@@ -40,6 +41,10 @@ const LocalSearch = ({
         type="text"
         placeholder={placeHolder}
         className="paragraph-regular no-focus placeholder background-light800_darkgradient border-none shadow-none outline-none"
+        value={searchVal}
+        onChange={(e) => {
+          setSetsearchVal(e.target.value);
+        }}
       />
       {iconPosition === "right" && (
         <Image
