@@ -25,11 +25,13 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-tailwindcss": "^3.13.0",
+    "html-react-parser": "^5.0.7",
     "lucide-react": "^0.284.0",
     "mongodb": "^6.3.0",
     "mongoose": "^8.0.1",
     "next": "latest",
     "prettier": "^3.0.3",
+    "prismjs": "^1.29.0",
     "react": "latest",
     "react-dom": "latest",
     "react-hook-form": "^7.48.2",
@@ -41,16 +43,17 @@
   },
   "devDependencies": {
     "@types/node": "latest",
+    "@types/prismjs": "^1.26.3",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "autoprefixer": "latest",
+    "aws-cdk-lib": "2.110.1",
+    "constructs": "10.3.0",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "latest",
-    "tailwindcss": "latest",
-    "typescript": "latest",
     "sst": "^2.36.8",
-    "aws-cdk-lib": "2.110.1",
-    "constructs": "10.3.0"
+    "tailwindcss": "latest",
+    "typescript": "latest"
   }
 }
