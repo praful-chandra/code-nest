@@ -4,7 +4,7 @@ import Question from "@/database/question.model";
 import { connectToDatabase } from "../mongoose";
 import { questionFormSchema } from "../validations";
 import tagModel from "@/database/tag.model";
-import { GetQuestionsParams } from "./shared.types";
+import { GetQuestionByIdParams, GetQuestionsParams } from "./shared.types";
 import userModel from "@/database/user.model";
 import { revalidatePath } from "next/cache";
 
@@ -83,3 +83,18 @@ export async function getQuestions(params: GetQuestionsParams) {
     throw err;
   }
 }
+
+export const getQuestionById = async (params: GetQuestionByIdParams) => {
+  try {
+    connectToDatabase();
+
+    const question = await Question.findById(params.questionId)
+      .populate("author")
+      .populate("tags");
+
+    return question;
+  } catch (err) {
+    console.log("ERROR_GET_QUESTION_BY_ID_ACTION", err);
+    throw err;
+  }
+};

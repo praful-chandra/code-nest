@@ -4,6 +4,7 @@ import Tag from "../shared/Tag";
 import { QuestionType } from "@/types/primitive";
 import Link from "next/link";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
+import Metric from "../shared/Metric";
 
 type QuestionCardProps = {
   question: QuestionType;
@@ -61,50 +62,22 @@ const QuestionCard = ({ question }: QuestionCardProps) => {
         </div>
         {/* VOTES - ANSWRS - VIEWS */}
         <div className="flex flex-wrap items-center justify-start gap-3 max-sm:mt-2">
-          <div className="flex items-center">
-            <Image
-              src="/assets/icons/cardLikes.svg"
-              width={16}
-              height={16}
-              alt="Likes"
-            />
-            <p>
-              <span className="small-medium mr-1">
-                {formatAndDivideNumber(upVotes?.length)}
-              </span>
-              <span className="small-regular">Votes</span>
-            </p>
-          </div>
+          <Metric
+            image="/assets/icons/cardLikes.svg"
+            text="Votes"
+            value={formatAndDivideNumber(upVotes?.length)}
+          />
 
-          <div className="flex items-center">
-            <Image
-              src="/assets/icons/cardComments.svg"
-              width={16}
-              height={16}
-              alt="Comments"
-            />
-            <p>
-              <span className="small-medium mr-1">
-                {formatAndDivideNumber(answers?.length)}
-              </span>
-              <span className="small-regular">Answers</span>
-            </p>
-          </div>
-
-          <div className="flex items-center">
-            <Image
-              src="/assets/icons/cardViews.svg"
-              width={16}
-              height={16}
-              alt="Views"
-            />
-            <p>
-              <span className="small-medium mr-1">
-                {formatAndDivideNumber(views)}
-              </span>
-              <span className="small-regular">Views</span>
-            </p>
-          </div>
+          <Metric
+            image="/assets/icons/cardComments.svg"
+            text="Answers"
+            value={formatAndDivideNumber(answers?.length)}
+          />
+          <Metric
+            image="/assets/icons/cardViews.svg"
+            text="Views"
+            value={formatAndDivideNumber(views)}
+          />
         </div>
       </div>
     </div>

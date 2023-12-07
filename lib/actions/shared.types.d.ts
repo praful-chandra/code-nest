@@ -37,3 +37,7 @@ export interface FetchAllTagsProps {
 export interface FetchUserTagsProps {
   userId?: string;
 }
+
+export interface GetQuestionByIdParams {
+  questionId: string;
+}
