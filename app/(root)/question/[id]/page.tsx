@@ -1,3 +1,4 @@
+import AnswerAQuestionForm from "@/components/forms/answerAQuestionForm";
 import Metric from "@/components/shared/Metric";
 import ParseHtml from "@/components/shared/ParseHtml";
 import Tag from "@/components/shared/Tag";
@@ -79,6 +80,10 @@ const Page = async ({ params }: { params: ParamsType }) => {
             variant="soft"
           />
         ))}
+      </div>
+
+      <div className="mt-8">
+        <AnswerAQuestionForm questionId={questionId} />
       </div>
     </>
   );
