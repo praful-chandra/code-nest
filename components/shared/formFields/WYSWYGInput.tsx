@@ -10,6 +10,7 @@ import {
 import { useFormContext } from "react-hook-form";
 import { Editor } from "@tinymce/tinymce-react";
 import Loader from "../Loader";
+import { useTheme } from "@/context/ThemeProvider";
 
 type Props = {
   name: string;
@@ -21,6 +22,7 @@ type Props = {
 const WyswygInput = ({ name, label, required = false, description }: Props) => {
   const [isEditorInit, setIsEditorInit] = useState(false);
   const formMethods = useFormContext();
+  const { mode } = useTheme();
 
   const editorRef = useRef(null);
 
@@ -75,6 +77,8 @@ const WyswygInput = ({ name, label, required = false, description }: Props) => {
                     "alignright alignjustify | bullist numlist outdent indent | " +
                     "removeformat",
                   content_style: "body { font-family:Inter; font-size:16px }",
+                  skin: mode === "light" ? "oxide" : "oxide-dark",
+                  content_css: mode === "light" ? "default" : "dark",
                 }}
                 id={`WYSIWYG ${name}`}
               />
