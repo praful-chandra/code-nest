@@ -11,9 +11,14 @@ type answerFormType = z.infer<typeof answerFormSchema>;
 type FormPropsType = {
   answerFormMethods: UseFormReturn<answerFormType>;
   onSubmit: (vals: answerFormType) => void;
+  isLoading: boolean;
 };
 
-const AnswerForm = ({ answerFormMethods, onSubmit }: FormPropsType) => {
+const AnswerForm = ({
+  answerFormMethods,
+  onSubmit,
+  isLoading,
+}: FormPropsType) => {
   return (
     <Form {...answerFormMethods}>
       <form
@@ -24,14 +29,15 @@ const AnswerForm = ({ answerFormMethods, onSubmit }: FormPropsType) => {
           Write your answer here
         </p>
 
-        <WYSWYGInput label="" name="answer" />
+        <WYSWYGInput label="" name="answerContent" />
 
         <div className="flex w-full items-center justify-end">
           <Button
             className="primary-gradient min-h-[46px] px-4 py-3 !text-light-900 "
             type="submit"
+            disabled={isLoading}
           >
-            Post Answer
+            {isLoading ? "Posting...." : "Post Answer"}
           </Button>
         </div>
       </form>

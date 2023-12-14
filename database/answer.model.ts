@@ -9,6 +9,8 @@ export interface IAnswer extends Document {
   createdAt: Date;
   isEdited: boolean;
   editedAt: Date | null;
+  isDeleted: boolean;
+  deletedAt: Date | null;
 }
 
 const AnswerSchema = new Schema({
@@ -23,6 +25,8 @@ const AnswerSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
   isEdited: { type: Boolean, default: false },
   editedAt: { type: Date, default: null },
+  isDeleted: { type: Boolean, default: false },
+  deletedAt: { type: Date, default: null },
 });
 
 const Answer = models.Answer || model("Answer", AnswerSchema);
