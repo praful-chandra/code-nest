@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 interface ThemeContextType {
-  mode: string;
+  mode: "light" | "dark" | "system";
   setMode: (mode: "light" | "dark" | "system") => void;
 }
 

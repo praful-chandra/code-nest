@@ -50,7 +50,7 @@ const MultiSelect = ({
       render={({ field }) =>
         isMounted ? (
           <FormItem className="font-inter">
-            <FormLabel className="paragraph-semibold text-dark400_light800 ">
+            <FormLabel className="paragraph-semibold text-dark400_light800">
               {label} {required && <span className="text-red-500">*</span>}
             </FormLabel>
             <FormControl>
@@ -69,6 +69,8 @@ const MultiSelect = ({
                 isLoading={isOptionsLoading}
                 noOptionsMessage={noOptionComp}
                 id={`AsyncSelect ${name}`}
+                className="my-react-select-container"
+                classNamePrefix="my-react-select"
               />
             </FormControl>
             {description && (

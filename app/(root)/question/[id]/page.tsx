@@ -1,7 +1,9 @@
+import AnswerAQuestionForm from "@/components/forms/answerAQuestionForm";
 import Metric from "@/components/shared/Metric";
 import ParseHtml from "@/components/shared/ParseHtml";
 import Tag from "@/components/shared/Tag";
 import { getQuestionById } from "@/lib/actions/question.action";
+import { getCurrentProfile } from "@/lib/currentProfile";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 import { QuestionType } from "@/types/primitive";
 import Image from "next/image";
@@ -14,6 +16,7 @@ type ParamsType = {
 
 const Page = async ({ params }: { params: ParamsType }) => {
   const { id: questionId } = params;
+  const currentProfile = await getCurrentProfile();
 
   const questionData: QuestionType = await getQuestionById({ questionId });
 
@@ -79,6 +82,13 @@ const Page = async ({ params }: { params: ParamsType }) => {
             variant="soft"
           />
         ))}
+      </div>
+
+      <div className="mt-8">
+        <AnswerAQuestionForm
+          questionId={questionId}
+          currentProfile={JSON.stringify(currentProfile)}
+        />
       </div>
     </>
   );
