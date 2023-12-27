@@ -1,4 +1,5 @@
 import AnswerAQuestionForm from "@/components/forms/answerAQuestionForm";
+import AllAnswers from "@/components/question/allAnswers";
 import Metric from "@/components/shared/Metric";
 import ParseHtml from "@/components/shared/ParseHtml";
 import Tag from "@/components/shared/Tag";
@@ -6,6 +7,7 @@ import { getQuestionById } from "@/lib/actions/question.action";
 import { getCurrentProfile } from "@/lib/currentProfile";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 import { QuestionType } from "@/types/primitive";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -85,10 +87,22 @@ const Page = async ({ params }: { params: ParamsType }) => {
       </div>
 
       <div className="mt-8">
-        <AnswerAQuestionForm
-          questionId={questionId}
-          currentProfile={JSON.stringify(currentProfile)}
-        />
+        <AllAnswers questionId={questionId} />
+      </div>
+
+      <div className="mt-8">
+        <SignedIn>
+          <AnswerAQuestionForm
+            questionId={questionId}
+            currentProfile={JSON.stringify(currentProfile)}
+          />
+        </SignedIn>
+
+        <SignedOut>
+          <p className="h3-bold text-gradient text-center">
+            You must be logged in to answer this query.
+          </p>
+        </SignedOut>
       </div>
     </>
   );

@@ -31,7 +31,7 @@ const Filters = ({
             <SelectValue placeholder="Select a Filter" />
           </div>
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="background-light800_dark300 text-dark500_light700">
           <SelectGroup>
             {filterOptions.map((item) => (
               <SelectItem
