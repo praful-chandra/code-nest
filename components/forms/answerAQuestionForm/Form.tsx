@@ -35,7 +35,7 @@ const AnswerForm = ({
           <Button
             className="primary-gradient min-h-[46px] px-4 py-3 !text-light-900 "
             type="submit"
-            disabled={isLoading}
+            disabled={isLoading || !answerFormMethods.formState.isValid}
           >
             {isLoading ? "Posting...." : "Post Answer"}
           </Button>

@@ -17,3 +17,10 @@ export const tagFilters = [
   { label: "label", value: "name" },
   { label: "Old", value: "old" },
 ];
+
+export const AnswerFilters = [
+  { label: "Highest Upvotes", value: "highestUpvotes" },
+  { label: "Lowest Upvotes", value: "lowestUpvotes" },
+  { label: "Most Recent", value: "recent" },
+  { label: "Oldest", value: "old" },
+];

@@ -139,3 +139,30 @@ export const answerQuestion = async (answerQuestionData: unknown) => {
     throw err;
   }
 };
+
+export const fetchAllAnswersToAQuestion = async (questionId: string) => {
+  try {
+    connectToDatabase();
+
+    const currentQuestion = await Question.findById(questionId);
+
+    if (!currentQuestion) {
+      throw new Error("Invalid question");
+    }
+
+    const allAnswers = await Answer.find({ question: questionId })
+      .sort({
+        createdAt: -1,
+      })
+      .populate({
+        path: "author",
+        model: userModel,
+        select: "_id clerkId name avatar isDeleted deletedOn",
+      });
+
+    return { answers: allAnswers };
+  } catch (err) {
+    console.log("ERROR_FETCH_ALL_ANSWER_TO_QUESTION__:", err);
+    throw err;
+  }
+};

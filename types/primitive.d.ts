@@ -1,3 +1,5 @@
+import { ObjectId } from "mongoose";
+
 export interface TagType {
   _id: string;
   __v: number;
@@ -26,7 +28,18 @@ export interface UserType {
 }
 
 export interface AnswerType {
-  // Define the properties of an answer if needed
+  _id: ObjectId;
+  question: ObjectId;
+  author: UserType; // Assuming author can be an object with unspecified structure
+  upVotes: string[]; // these are user IDs who upvoted
+  downVotes: string[]; // these are user IDs who downvoted
+  answerContent: string;
+  isEdited: boolean;
+  editedAt: Date | null;
+  isDeleted: boolean;
+  deletedAt: Date | null;
+  createdAt: Date;
+  __v: number;
 }
 
 export interface QuestionType {
