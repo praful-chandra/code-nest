@@ -7,7 +7,7 @@ import * as z from "zod";
 import { answerFormSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname } from "next/navigation";
-import { answerQuestion } from "@/lib/actions/question.action";
+import { answerQuestion } from "@/lib/actions/answer.action";
 
 type answerFormType = z.infer<typeof answerFormSchema>;
 

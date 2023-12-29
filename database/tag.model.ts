@@ -36,4 +36,4 @@ const TagSchema = new Schema({
   },
 });
 
-export default models.Tag || model("Tag", TagSchema);
+export default models?.Tag || model("Tag", TagSchema);

@@ -1,12 +1,11 @@
 "use server";
 
-import Answer from "@/database/answer.model";
 import Question from "@/database/question.model";
 import tagModel from "@/database/tag.model";
 import userModel from "@/database/user.model";
 import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "../mongoose";
-import { answerFormSchema, questionFormSchema } from "../validations";
+import { questionFormSchema } from "../validations";
 import { GetQuestionByIdParams, GetQuestionsParams } from "./shared.types";
 
 export async function createQuestion(newQuestionData: unknown) {
@@ -96,73 +95,6 @@ export const getQuestionById = async (params: GetQuestionByIdParams) => {
     return question;
   } catch (err) {
     console.log("ERROR_GET_QUESTION_BY_ID_ACTION", err);
-    throw err;
-  }
-};
-
-export const answerQuestion = async (answerQuestionData: unknown) => {
-  try {
-    connectToDatabase();
-
-    const validationResult = answerFormSchema.safeParse(answerQuestionData);
-
-    if (!validationResult.success) {
-      let errorMessage = "";
-
-      validationResult.error.issues.forEach((issue) => {
-        errorMessage = `${errorMessage} ${issue.path[0]} : ${issue.message}. `;
-      });
-      return {
-        error: errorMessage,
-      };
-    }
-
-    const {
-      data: { answerContent, author, path, questionId },
-    } = validationResult;
-
-    const newAnswer = await Answer.create({
-      question: questionId,
-      author,
-      answerContent,
-    });
-
-    await Question.findByIdAndUpdate(questionId, {
-      $push: {
-        answers: newAnswer._id,
-      },
-    });
-
-    revalidatePath(path);
-  } catch (err) {
-    console.log("ERROR_ANSWER_QUESTION__:", err);
-    throw err;
-  }
-};
-
-export const fetchAllAnswersToAQuestion = async (questionId: string) => {
-  try {
-    connectToDatabase();
-
-    const currentQuestion = await Question.findById(questionId);
-
-    if (!currentQuestion) {
-      throw new Error("Invalid question");
-    }
-
-    const allAnswers = await Answer.find({ question: questionId })
-      .sort({
-        createdAt: -1,
-      })
-      .populate({
-        path: "author",
-        model: userModel,
-        select: "_id clerkId name avatar isDeleted deletedOn",
-      });
-
-    return { answers: allAnswers };
-  } catch (err) {
-    console.log("ERROR_FETCH_ALL_ANSWER_TO_QUESTION__:", err);
     throw err;
   }
 };

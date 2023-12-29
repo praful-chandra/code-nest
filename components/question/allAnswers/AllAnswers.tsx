@@ -1,5 +1,5 @@
 import React from "react";
-import { fetchAllAnswersToAQuestion } from "@/lib/actions/question.action";
+import { fetchAllAnswersToAQuestion } from "@/lib/actions/answer.action";
 import { AnswerType } from "@/types/primitive";
 import Filters from "@/components/shared/Filters";
 import { AnswerFilters } from "@/constants/filters";

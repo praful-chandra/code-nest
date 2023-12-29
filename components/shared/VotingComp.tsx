@@ -4,10 +4,11 @@ import React from "react";
 import { Button } from "../ui/button";
 import { toggleDownvote, toggleUpvote } from "@/lib/actions/question.action";
 import { usePathname } from "next/navigation";
+import { downVoteAnswer, upvoteAnswer } from "@/lib/actions/answer.action";
 
 type VotingCompProps = {
   type: "question" | "answer";
-  questionId: string;
+  typeId: string;
   currentUserId: string;
   upvotes: string;
   downvotes: string;
@@ -128,7 +129,7 @@ const VotingComp = ({
   type,
   currentUserId,
   downvotes,
-  questionId,
+  typeId,
   upvotes,
 }: VotingCompProps) => {
   const pathName = usePathname();
@@ -138,25 +139,41 @@ const VotingComp = ({
     : [];
 
   const handleUpvoteClick = () => {
-    toggleUpvote(questionId, currentUserId, pathName);
+    if (type === "question") {
+      toggleUpvote(typeId, currentUserId, pathName);
+    }
+    if (type === "answer") {
+      upvoteAnswer(typeId, currentUserId, pathName);
+    }
   };
 
   const handleDownvoteClick = () => {
-    toggleDownvote(questionId, currentUserId, pathName);
+    if (type === "question") {
+      toggleDownvote(typeId, currentUserId, pathName);
+    }
+    if (type === "answer") {
+      downVoteAnswer(typeId, currentUserId, pathName);
+    }
   };
 
   return (
     <div className="flex">
       <div className="mr-3 flex items-center">
         <UpVote
-          isFilled={type === "question"}
+          isFilled={
+            type === "question" ||
+            !!resolvedUpvotes.find((up) => up === currentUserId)
+          }
           handleClick={handleUpvoteClick}
         />
         <VoteCount count={resolvedUpvotes?.length ?? 0} />
       </div>
       <div className="mr-5 flex items-center">
         <DownVote
-          isFilled={type === "question"}
+          isFilled={
+            type === "question" ||
+            !!resolvedDownvotes.find((dv) => dv === currentUserId)
+          }
           handleClick={handleDownvoteClick}
         />
         <VoteCount count={(resolvedDownvotes?.length ?? 0) * -1} />

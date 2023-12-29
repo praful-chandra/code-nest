@@ -45,7 +45,7 @@ const Page = async ({ params }: { params: ParamsType }) => {
         <div className="flex justify-end">
           <VotingComp
             type="question"
-            questionId={questionId}
+            typeId={questionId}
             currentUserId={String(currentProfile?._id)}
             downvotes={JSON.stringify(questionData?.downVotes)}
             upvotes={JSON.stringify(questionData?.upVotes)}
