@@ -1,13 +1,13 @@
 "use server";
 
+import Answer from "@/database/answer.model";
 import Question from "@/database/question.model";
-import { connectToDatabase } from "../mongoose";
-import { questionFormSchema, answerFormSchema } from "../validations";
 import tagModel from "@/database/tag.model";
-import { GetQuestionByIdParams, GetQuestionsParams } from "./shared.types";
 import userModel from "@/database/user.model";
 import { revalidatePath } from "next/cache";
-import Answer from "@/database/answer.model";
+import { connectToDatabase } from "../mongoose";
+import { answerFormSchema, questionFormSchema } from "../validations";
+import { GetQuestionByIdParams, GetQuestionsParams } from "./shared.types";
 
 export async function createQuestion(newQuestionData: unknown) {
   try {
@@ -163,6 +163,82 @@ export const fetchAllAnswersToAQuestion = async (questionId: string) => {
     return { answers: allAnswers };
   } catch (err) {
     console.log("ERROR_FETCH_ALL_ANSWER_TO_QUESTION__:", err);
+    throw err;
+  }
+};
+
+export const toggleUpvote = async (
+  questionId: string,
+  userId: string,
+  path: string
+) => {
+  try {
+    connectToDatabase();
+
+    const question = await Question.findById(questionId);
+
+    const hasDownvoted = !!question.downVotes.find((dv: any) =>
+      dv.equals(userId)
+    );
+    const hasUpvoted = !!question.upVotes.find((up: any) => up.equals(userId));
+
+    const query = {
+      $pull: {},
+      $addToSet: {},
+    };
+
+    if (hasDownvoted) {
+      query.$pull = { downVotes: userId };
+      query.$addToSet = { upVotes: userId };
+    } else if (hasUpvoted) {
+      query.$pull = { upVotes: userId };
+    } else {
+      query.$addToSet = { upVotes: userId };
+    }
+
+    await Question.findByIdAndUpdate(questionId, query);
+
+    revalidatePath(path);
+  } catch (err) {
+    console.log("ERROR_TOGGLE_UPVOTE_QUESTION__:", err);
+    throw err;
+  }
+};
+
+export const toggleDownvote = async (
+  questionId: string,
+  userId: string,
+  path: string
+) => {
+  try {
+    connectToDatabase();
+
+    const question = await Question.findById(questionId);
+
+    const hasDownvoted = !!question.downVotes.find((dv: any) =>
+      dv.equals(userId)
+    );
+    const hasUpvoted = !!question.upVotes.find((up: any) => up.equals(userId));
+
+    const query = {
+      $pull: {},
+      $addToSet: {},
+    };
+
+    if (hasUpvoted) {
+      query.$pull = { upVotes: userId };
+      query.$addToSet = { downVotes: userId };
+    } else if (hasDownvoted) {
+      query.$pull = { downVotes: userId };
+    } else {
+      query.$addToSet = { downVotes: userId };
+    }
+
+    await Question.findByIdAndUpdate(questionId, query);
+
+    revalidatePath(path);
+  } catch (err) {
+    console.log("ERROR_TOGGLE_UPVOTE_QUESTION__:", err);
     throw err;
   }
 };

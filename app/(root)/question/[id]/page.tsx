@@ -3,6 +3,7 @@ import AllAnswers from "@/components/question/allAnswers";
 import Metric from "@/components/shared/Metric";
 import ParseHtml from "@/components/shared/ParseHtml";
 import Tag from "@/components/shared/Tag";
+import VotingComp from "@/components/shared/VotingComp";
 import { getQuestionById } from "@/lib/actions/question.action";
 import { getCurrentProfile } from "@/lib/currentProfile";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
@@ -41,7 +42,15 @@ const Page = async ({ params }: { params: ParamsType }) => {
           </p>
         </Link>
 
-        <div className="flex justify-end">VOTES</div>
+        <div className="flex justify-end">
+          <VotingComp
+            type="question"
+            questionId={questionId}
+            currentUserId={String(currentProfile?._id)}
+            downvotes={JSON.stringify(questionData?.downVotes)}
+            upvotes={JSON.stringify(questionData?.upVotes)}
+          />
+        </div>
       </div>
 
       <div className="mt-4">

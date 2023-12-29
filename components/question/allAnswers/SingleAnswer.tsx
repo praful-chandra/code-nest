@@ -4,6 +4,7 @@ import React from "react";
 import { getTimestamp } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import ParseHtml from "@/components/shared/ParseHtml";
+import VotingComp from "@/components/shared/VotingComp";
 
 type SingleAnswerProps = {
   answer: AnswerType;
@@ -36,7 +37,9 @@ const SingleAnswer = ({ answer }: SingleAnswerProps) => {
             &#9679; answered {getTimestamp(answer?.createdAt)}
           </p>
         </div>
-        <div className="flex items-center">Votes</div>
+        <div className="flex items-center">
+          <VotingComp type="answer" />
+        </div>
       </div>
 
       <div className="mt-6">

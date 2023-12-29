@@ -16,7 +16,7 @@ const AllAnswers = async ({ questionId }: AllAnswersProps) => {
 
   return (
     <section>
-      <div className="flex items-center justify-between">
+      <div className="my-8 flex items-center justify-between">
         <p className="paragraph-medium text-gradient">
           {allAnswers?.answers?.length} Answers
         </p>
