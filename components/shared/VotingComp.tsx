@@ -5,6 +5,8 @@ import { Button } from "../ui/button";
 import { toggleDownvote, toggleUpvote } from "@/lib/actions/question.action";
 import { usePathname } from "next/navigation";
 import { downVoteAnswer, upvoteAnswer } from "@/lib/actions/answer.action";
+import NotSignedInDialog from "./dialogs/NotSignedInDialog";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
 
 type VotingCompProps = {
   type: "question" | "answer";
@@ -139,6 +141,9 @@ const VotingComp = ({
     : [];
 
   const handleUpvoteClick = () => {
+    if (!currentUserId || currentUserId === "undefined") {
+      return;
+    }
     if (type === "question") {
       toggleUpvote(typeId, currentUserId, pathName);
     }
@@ -148,6 +153,9 @@ const VotingComp = ({
   };
 
   const handleDownvoteClick = () => {
+    if (!currentUserId || currentUserId === "undefined") {
+      return;
+    }
     if (type === "question") {
       toggleDownvote(typeId, currentUserId, pathName);
     }
@@ -159,23 +167,51 @@ const VotingComp = ({
   return (
     <div className="flex">
       <div className="mr-3 flex items-center">
-        <UpVote
-          isFilled={
-            type === "question" ||
-            !!resolvedUpvotes.find((up) => up === currentUserId)
-          }
-          handleClick={handleUpvoteClick}
-        />
+        <SignedIn>
+          <UpVote
+            isFilled={
+              type === "question" ||
+              !!resolvedUpvotes.find((up) => up === currentUserId)
+            }
+            handleClick={handleUpvoteClick}
+          />
+        </SignedIn>
+        <SignedOut>
+          <NotSignedInDialog>
+            <UpVote
+              isFilled={
+                type === "question" ||
+                !!resolvedUpvotes.find((up) => up === currentUserId)
+              }
+              handleClick={handleUpvoteClick}
+            />
+          </NotSignedInDialog>
+        </SignedOut>
         <VoteCount count={resolvedUpvotes?.length ?? 0} />
       </div>
       <div className="mr-5 flex items-center">
-        <DownVote
-          isFilled={
-            type === "question" ||
-            !!resolvedDownvotes.find((dv) => dv === currentUserId)
-          }
-          handleClick={handleDownvoteClick}
-        />
+        <SignedIn>
+          <DownVote
+            isFilled={
+              type === "question" ||
+              !!resolvedDownvotes.find((dv) => dv === currentUserId)
+            }
+            handleClick={handleDownvoteClick}
+          />
+        </SignedIn>
+
+        <SignedOut>
+          <NotSignedInDialog>
+            <DownVote
+              isFilled={
+                type === "question" ||
+                !!resolvedDownvotes.find((dv) => dv === currentUserId)
+              }
+              handleClick={handleDownvoteClick}
+            />
+          </NotSignedInDialog>
+        </SignedOut>
+
         <VoteCount count={(resolvedDownvotes?.length ?? 0) * -1} />
       </div>
       {type === "question" && (
