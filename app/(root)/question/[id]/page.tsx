@@ -24,8 +24,8 @@ const Page = async ({ params }: { params: ParamsType }) => {
   const questionData: QuestionType = await getQuestionById({ questionId });
 
   return (
-    <>
-      <div className="flex w-full flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
+    <div className=" w-full max-w-[90dvw] overflow-hidden break-normal">
+      <div className="flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
         <Link
           href={`/profile/${questionData?.author?._id}`}
           className="flex justify-start gap-3"
@@ -113,7 +113,7 @@ const Page = async ({ params }: { params: ParamsType }) => {
           </p>
         </SignedOut>
       </div>
-    </>
+    </div>
   );
 };
 
