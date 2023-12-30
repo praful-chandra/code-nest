@@ -1,15 +1,18 @@
 "use server";
 
+import { FilterQuery } from "mongoose";
 import { connectToDatabase } from "../mongoose";
 import User from "@/database/user.model";
 import {
   CreateUserParams,
   FetchAllUserProps,
+  FetchAllUserSavedQuestionsProps,
   SaveQuestionProps,
   UpdateUserParams,
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
+import tagModel from "@/database/tag.model";
 
 export async function getUserById(params: { userId: string }) {
   try {
@@ -142,6 +145,46 @@ export const saveQuestion = async (props: SaveQuestionProps) => {
     revalidatePath(path);
   } catch (err) {
     console.log("ERROR_FETCH_ALL_USER_ACTION", err);
+    throw err;
+  }
+};
+
+export const fetchAllUserSavedQuestions = async (
+  params: FetchAllUserSavedQuestionsProps
+) => {
+  try {
+    connectToDatabase();
+
+    const { userId, searchQuery } = params;
+
+    const query: FilterQuery<typeof Question> = searchQuery
+      ? { title: { $regex: new RegExp(searchQuery, "i") } }
+      : {};
+
+    const currentUser = await User.findById(userId).populate({
+      path: "questions",
+      match: query,
+      options: {
+        sort: { createdAt: -1 },
+      },
+      populate: [
+        { path: "tags", model: tagModel, select: "_id name" },
+        {
+          path: "author",
+          model: User,
+          select: "_id clerkId name avatar",
+        },
+      ],
+    });
+
+    if (!currentUser) {
+      throw new Error("Some error occured!.");
+    }
+
+    const savedQuestions = currentUser.questions;
+    return { questions: savedQuestions };
+  } catch (err) {
+    console.log("ERROR_FETCH_ALL_USER_SAVED_QUESTION_ACTION", err);
     throw err;
   }
 };
