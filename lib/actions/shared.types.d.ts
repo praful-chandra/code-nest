@@ -30,7 +30,7 @@ export interface FetchAllUserProps {
 export interface FetchAllTagsProps {
   page?: number;
   pageSize?: number;
-  flter?: string;
+  filter?: string;
   searchQuery?: string;
 }
 
@@ -46,4 +46,12 @@ export interface SaveQuestionProps {
   userId: string;
   questionId: string;
   path: string;
+}
+
+export interface FetchAllUserSavedQuestionsProps {
+  userId: string;
+  page?: number;
+  pageSize?: number;
+  filter?: string;
+  searchQuery?: string;
 }
