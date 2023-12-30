@@ -49,6 +49,7 @@ const Page = async ({ params }: { params: ParamsType }) => {
             currentUserId={String(currentProfile?._id)}
             downvotes={JSON.stringify(questionData?.downVotes)}
             upvotes={JSON.stringify(questionData?.upVotes)}
+            savedQuestions={JSON.stringify(currentProfile?.questions)}
           />
         </div>
       </div>

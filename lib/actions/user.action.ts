@@ -5,9 +5,11 @@ import User from "@/database/user.model";
 import {
   CreateUserParams,
   FetchAllUserProps,
+  SaveQuestionProps,
   UpdateUserParams,
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
+import Question from "@/database/question.model";
 
 export async function getUserById(params: { userId: string }) {
   try {
@@ -94,6 +96,50 @@ export const fetchAllUser = async (props: FetchAllUserProps) => {
     );
 
     return allUsers;
+  } catch (err) {
+    console.log("ERROR_FETCH_ALL_USER_ACTION", err);
+    throw err;
+  }
+};
+
+export const saveQuestion = async (props: SaveQuestionProps) => {
+  try {
+    connectToDatabase();
+
+    const { path, questionId, userId } = props;
+
+    const question = await Question.findById(questionId);
+    const user = await User.findById(userId);
+
+    if (!question) {
+      throw new Error("Invalid Question Id");
+    }
+
+    if (!user) {
+      throw new Error("Error Occured!");
+    }
+
+    const isQuestionAlreadySaved = !!user.questions.find((q: any) =>
+      q.equals(questionId)
+    );
+
+    const query = {
+      $pull: {},
+      $addToSet: {},
+    };
+
+    if (isQuestionAlreadySaved) {
+      query.$pull = {
+        questions: questionId,
+      };
+    } else {
+      query.$addToSet = {
+        questions: questionId,
+      };
+    }
+    await User.findByIdAndUpdate(userId, query);
+
+    revalidatePath(path);
   } catch (err) {
     console.log("ERROR_FETCH_ALL_USER_ACTION", err);
     throw err;

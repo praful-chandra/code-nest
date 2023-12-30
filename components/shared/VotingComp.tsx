@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { downVoteAnswer, upvoteAnswer } from "@/lib/actions/answer.action";
 import NotSignedInDialog from "./dialogs/NotSignedInDialog";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { saveQuestion } from "@/lib/actions/user.action";
 
 type VotingCompProps = {
   type: "question" | "answer";
@@ -14,6 +15,7 @@ type VotingCompProps = {
   currentUserId: string;
   upvotes: string;
   downvotes: string;
+  savedQuestions?: string;
 };
 
 const UpVote = ({
@@ -87,42 +89,91 @@ const VoteCount = ({ count }: { count: number }) => {
   );
 };
 
-const Bookmark = ({ isFilled = false }: { isFilled?: boolean }) => {
+const Bookmark = ({
+  isFilled = false,
+  handleClick,
+}: {
+  isFilled?: boolean;
+  handleClick: () => void;
+}) => {
   return (
-    <Button className="p-0">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="18"
-        height="18"
-        viewBox="0 0 18 18"
-        fill="none"
-      >
-        <g clip-path="url(#clip0_543_4157)">
+    <Button className="p-0" onClick={handleClick}>
+      {isFilled ? (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 18 18"
+          fill="none"
+        >
           <path
-            d="M8.9444 14.0956L3.42005 17.0001L4.47533 10.8483L0 6.49198L6.17596 5.59691L8.93814 6.10352e-05L11.7003 5.59691L17.8763 6.49198L13.4009 10.8483L14.4562 17.0001L8.9444 14.0956Z"
-            stroke="url(#paint0_linear_543_4157)"
+            d="M9.00561 13.6161L4.06109 16.2158L5.00561 10.7097L1 6.8106L6.52774 6.00947L9 1.00006L11.4723 6.00947L17 6.8106L12.9944 10.7097L13.9389 16.2158L9.00561 13.6161Z"
+            fill="url(#paint0_linear_40391_2403)"
+            stroke="url(#paint1_linear_40391_2403)"
             stroke-width="1.2"
             stroke-linecap="round"
             stroke-linejoin="round"
           />
-        </g>
-        <defs>
-          <linearGradient
-            id="paint0_linear_543_4157"
-            x1="-2.63494"
-            y1="6.48951e-05"
-            x2="18.7198"
-            y2="1.26341"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stop-color="#FF7000" />
-            <stop offset="1" stop-color="#E2995F" />
-          </linearGradient>
-          <clipPath id="clip0_543_4157">
-            <rect width="18" height="18" fill="white" />
-          </clipPath>
-        </defs>
-      </svg>
+          <defs>
+            <linearGradient
+              id="paint0_linear_40391_2403"
+              x1="-1.35838"
+              y1="1.00006"
+              x2="17.755"
+              y2="2.13081"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#FF7000" />
+              <stop offset="1" stop-color="#E2995F" />
+            </linearGradient>
+            <linearGradient
+              id="paint1_linear_40391_2403"
+              x1="-1.35838"
+              y1="1.00006"
+              x2="17.755"
+              y2="2.13081"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#FF7000" />
+              <stop offset="1" stop-color="#E2995F" />
+            </linearGradient>
+          </defs>
+        </svg>
+      ) : (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 18 18"
+          fill="none"
+        >
+          <g clip-path="url(#clip0_543_4157)">
+            <path
+              d="M8.9444 14.0956L3.42005 17.0001L4.47533 10.8483L0 6.49198L6.17596 5.59691L8.93814 6.10352e-05L11.7003 5.59691L17.8763 6.49198L13.4009 10.8483L14.4562 17.0001L8.9444 14.0956Z"
+              stroke="url(#paint0_linear_543_4157)"
+              stroke-width="1.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </g>
+          <defs>
+            <linearGradient
+              id="paint0_linear_543_4157"
+              x1="-2.63494"
+              y1="6.48951e-05"
+              x2="18.7198"
+              y2="1.26341"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#FF7000" />
+              <stop offset="1" stop-color="#E2995F" />
+            </linearGradient>
+            <clipPath id="clip0_543_4157">
+              <rect width="18" height="18" fill="white" />
+            </clipPath>
+          </defs>
+        </svg>
+      )}
     </Button>
   );
 };
@@ -133,11 +184,15 @@ const VotingComp = ({
   downvotes,
   typeId,
   upvotes,
+  savedQuestions,
 }: VotingCompProps) => {
   const pathName = usePathname();
   const resolvedUpvotes = upvotes ? (JSON.parse(upvotes) as string[]) : [];
   const resolvedDownvotes = downvotes
     ? (JSON.parse(downvotes) as string[])
+    : [];
+  const resolvedSavedQuestions = savedQuestions
+    ? (JSON.parse(savedQuestions) as string[])
     : [];
 
   const handleUpvoteClick = () => {
@@ -164,6 +219,18 @@ const VotingComp = ({
     }
   };
 
+  const handleSaveClick = () => {
+    if (!currentUserId || currentUserId === "undefined") {
+      return;
+    }
+    if (type === "question") {
+      saveQuestion({
+        path: pathName,
+        questionId: typeId,
+        userId: currentUserId,
+      });
+    }
+  };
   return (
     <div className="flex">
       <div className="mr-3 flex items-center">
@@ -216,7 +283,17 @@ const VotingComp = ({
       </div>
       {type === "question" && (
         <div className="flex items-center">
-          <Bookmark />
+          <SignedIn>
+            <Bookmark
+              handleClick={handleSaveClick}
+              isFilled={resolvedSavedQuestions.includes(typeId)}
+            />
+          </SignedIn>
+          <SignedOut>
+            <NotSignedInDialog>
+              <Bookmark handleClick={handleSaveClick} />
+            </NotSignedInDialog>
+          </SignedOut>
         </div>
       )}
     </div>
