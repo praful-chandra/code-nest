@@ -55,3 +55,8 @@ export interface FetchAllUserSavedQuestionsProps {
   filter?: string;
   searchQuery?: string;
 }
+
+export interface ViewQuestionParams {
+  userId: string | undefined;
+  questionId: string;
+}
