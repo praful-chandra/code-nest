@@ -1,5 +1,3 @@
-"use server";
-
 import { Document, Schema, model, models } from "mongoose";
 
 export interface IInteraction extends Document {
