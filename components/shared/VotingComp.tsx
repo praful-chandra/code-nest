@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "../ui/button";
 import { toggleDownvote, toggleUpvote } from "@/lib/actions/question.action";
 import { usePathname } from "next/navigation";
@@ -8,6 +8,7 @@ import { downVoteAnswer, upvoteAnswer } from "@/lib/actions/answer.action";
 import NotSignedInDialog from "./dialogs/NotSignedInDialog";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { saveQuestion } from "@/lib/actions/user.action";
+import { viewQuestion } from "@/lib/actions/interaction.action";
 
 type VotingCompProps = {
   type: "question" | "answer";
@@ -231,6 +232,15 @@ const VotingComp = ({
       });
     }
   };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (type === "question") {
+        viewQuestion({ questionId: typeId, userId: currentUserId });
+      }
+    }
+  }, [currentUserId, type, typeId, pathName]);
+
   return (
     <div className="flex">
       <div className="mr-3 flex items-center">
