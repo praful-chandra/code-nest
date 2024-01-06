@@ -4,9 +4,8 @@ import Filters from "@/components/shared/Filters";
 import NoResult from "@/components/shared/NoResult";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { homePageFilters } from "@/constants/filters";
-import { ITag } from "@/database/tag.model";
 import { fetchTagById } from "@/lib/actions/tag.action";
-import { QuestionType } from "@/types/primitive";
+import { QuestionType, TagType } from "@/types/primitive";
 import React from "react";
 
 type ParamsType = {
@@ -16,7 +15,7 @@ type ParamsType = {
 const Page = async ({ params }: { params: ParamsType }) => {
   const { id: tagId } = params;
 
-  const currentTag = (await fetchTagById({ tagId })) as ITag;
+  const currentTag = (await fetchTagById({ tagId })) as TagType;
   console.log({ currentTag });
 
   return (
@@ -43,9 +42,9 @@ const Page = async ({ params }: { params: ParamsType }) => {
       </div>
       <div className="mt-10">
         {currentTag?.questions?.length ? (
-          currentTag?.questions.map((que: QuestionType) => (
-            <QuestionCard question={que} key={que._id} />
-          ))
+          (currentTag?.questions as unknown as QuestionType[]).map(
+            (que: QuestionType) => <QuestionCard question={que} key={que._id} />
+          )
         ) : (
           <NoResult
             title="There’s no question to show"
