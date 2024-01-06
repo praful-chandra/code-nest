@@ -60,3 +60,7 @@ export interface ViewQuestionParams {
   userId: string | undefined;
   questionId: string;
 }
+
+export interface FetchTagByIdProps {
+  tagId: string;
+}
