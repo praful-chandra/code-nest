@@ -7,7 +7,6 @@ import NoResult from "@/components/shared/NoResult";
 import { QuestionType } from "@/types/primitive";
 import { fetchAllUserSavedQuestions } from "@/lib/actions/user.action";
 import { getCurrentProfile } from "@/lib/currentProfile";
-import console from "console";
 
 const Page = async () => {
   const currentProfile = await getCurrentProfile();
@@ -15,8 +14,6 @@ const Page = async () => {
   const questions = await fetchAllUserSavedQuestions({
     userId: currentProfile?._id,
   });
-
-  console.log(JSON.stringify(questions));
 
   return (
     <>

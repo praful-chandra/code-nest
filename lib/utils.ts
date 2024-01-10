@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const getTimestamp = (createdAt: Date): string => {
   const now = new Date();
-  const timeDifference = now.getTime() - createdAt.getTime();
+  const timeDifference = now?.getTime() - createdAt?.getTime();
 
   // Define time intervals in milliseconds
   const minute = 60 * 1000;
@@ -51,4 +51,11 @@ export const formatAndDivideNumber = (num: number): string => {
   } else {
     return num.toString();
   }
+};
+
+export const getMonthAndYear = (date: Date): string => {
+  const month = date.toLocaleString("en-US", { month: "long" });
+  const year = date.getFullYear();
+
+  return `${month} ${year}`;
 };

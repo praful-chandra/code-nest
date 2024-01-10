@@ -7,6 +7,7 @@ import {
   CreateUserParams,
   FetchAllUserProps,
   FetchAllUserSavedQuestionsProps,
+  GetProfileByIdProps,
   SaveQuestionProps,
   UpdateUserParams,
 } from "./shared.types";
@@ -185,6 +186,23 @@ export const fetchAllUserSavedQuestions = async (
     return { questions: savedQuestions };
   } catch (err) {
     console.log("ERROR_FETCH_ALL_USER_SAVED_QUESTION_ACTION", err);
+    throw err;
+  }
+};
+
+export const getProfileById = async (props: GetProfileByIdProps) => {
+  try {
+    connectToDatabase();
+    const { userId } = props;
+
+    const profile = await User.findById(userId);
+
+    profile.clerkId = null;
+    profile.email = null;
+
+    return { profile };
+  } catch (err) {
+    console.log("ERROR_GET_PROFILE_BY_ID_ACTION", err);
     throw err;
   }
 };

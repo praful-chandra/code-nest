@@ -64,3 +64,7 @@ export interface ViewQuestionParams {
 export interface FetchTagByIdProps {
   tagId: string;
 }
+
+export interface GetProfileByIdProps {
+  userId: string;
+}
