@@ -2,49 +2,65 @@ import React from "react";
 import Image from "next/image";
 import Information from "../shared/Information";
 import { Button } from "../ui/button";
+import { UserType } from "@/types/primitive";
+import { getMonthAndYear } from "@/lib/utils";
+import { getCurrentProfile } from "@/lib/currentProfile";
 
-const ProfileHeader = () => {
+type ProfileHeaderProps = {
+  user: string;
+};
+
+const ProfileHeader = async ({ user }: ProfileHeaderProps) => {
+  const currentProfile = await getCurrentProfile();
+  const thisUser: UserType = JSON.parse(user).profile;
+
   return (
     <div className="flex flex-wrap">
       <div className="">
         <Image
-          src="/assets/images/defaultUser.png"
+          src={
+            thisUser?.avatar && !thisUser?.isDeleted
+              ? thisUser?.avatar
+              : "/assets/images/defaultUser.png"
+          }
           width="140"
           height="140"
           alt="user avatar"
-          className="aspect-square"
+          className="rounded-full"
         />
       </div>
       <div className="ml-5 mt-3 flex-1">
-        <h1 className="h1-bold">JavaScript Mastery</h1>
-        <p className="paragraph-regular">@jsmasterypro</p>
+        <h1 className="h1-bold">{thisUser?.name}</h1>
+        <p className="paragraph-regular">@{thisUser?.userName}</p>
         <div className="mt-5 flex flex-wrap [&>div]:mr-5">
-          <Information
-            image="/assets/icons/link.svg"
-            text="https://jsmastery.pro"
-            linkText="jsmastery.pro"
-            type="link"
-          />
-          <Information
-            image="/assets/icons/location.svg"
-            text="Mumbai, India"
-          />
+          {thisUser?.portfolioWebsite && (
+            <Information
+              image="/assets/icons/link.svg"
+              text={`https://${thisUser?.portfolioWebsite}`}
+              linkText={thisUser?.portfolioWebsite}
+              type="link"
+            />
+          )}
+          {thisUser?.location && (
+            <Information
+              image="/assets/icons/location.svg"
+              text={thisUser?.location}
+            />
+          )}
           <Information
             image="/assets/icons/callender.svg"
-            text="Joined May 2023"
+            text={`Joined ${getMonthAndYear(new Date(thisUser?.joinedDate))}`}
           />
         </div>
-        <p className="mt-5">
-          Launch your development career with project-based coaching - showcase
-          your skills with practical development experience and land the coding
-          career of your dreams. Check out jsmastery.pro
-        </p>
+        {thisUser?.bio && <p className="mt-5">{thisUser?.bio}</p>}
       </div>
-      <div className="ml-3 mt-3">
-        <Button className="paragraph-medium bg-light-800 px-10 py-3">
-          Edit Profile
-        </Button>
-      </div>
+      {thisUser?._id === String(currentProfile?._id) && (
+        <div className="ml-3 mt-3">
+          <Button className="paragraph-medium bg-light-800 px-10 py-3">
+            Edit Profile
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
