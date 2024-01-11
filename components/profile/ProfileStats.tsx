@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn, formatAndDivideNumber } from "@/lib/utils";
 import React, { ReactNode } from "react";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
@@ -22,7 +22,7 @@ const StatsContent = ({
   className,
 }: {
   title: string;
-  value: number;
+  value: string;
   className?: string;
 }) => {
   return (
@@ -35,7 +35,7 @@ const StatsContent = ({
 
 const CardWrapper = ({ children }: { children: ReactNode }) => {
   return (
-    <Card className="light-border background-light900_dark300 flex w-full flex-wrap items-center justify-evenly gap-4 rounded-md border p-6 shadow-light-300 md:w-fit dark:shadow-dark-200">
+    <Card className="light-border background-light900_dark300 flex min-h-24 w-full flex-wrap items-center justify-evenly gap-4 rounded-md border p-6 shadow-light-300 md:w-fit dark:shadow-dark-200">
       {children}
     </Card>
   );
@@ -50,7 +50,7 @@ const BadgeCard = ({
   badgeImage: string;
   badgeImageAlt: string;
   badgeName: string;
-  value: number;
+  value: string;
 }) => {
   return (
     <CardWrapper>
@@ -70,10 +70,13 @@ const ProfileStats = ({ wrapperClassName, stats }: ProfileStatsProps) => {
         <CardWrapper>
           <StatsContent
             title="Questions"
-            value={stats?.totalQuestions}
+            value={formatAndDivideNumber(stats?.totalQuestions)}
             className="mr-10"
           />
-          <StatsContent title="Answers" value={stats?.totalAnswers} />
+          <StatsContent
+            title="Answers"
+            value={formatAndDivideNumber(stats?.totalAnswers)}
+          />
         </CardWrapper>
 
         {stats?.badges?.gold > 0 && (
@@ -81,7 +84,7 @@ const ProfileStats = ({ wrapperClassName, stats }: ProfileStatsProps) => {
             badgeImage="/assets/icons/goldMedal.svg"
             badgeImageAlt="Gold Medal"
             badgeName="Gold Badges"
-            value={stats?.badges?.gold}
+            value={formatAndDivideNumber(stats?.badges?.gold)}
           />
         )}
         {stats?.badges?.silver > 0 && (
@@ -89,7 +92,7 @@ const ProfileStats = ({ wrapperClassName, stats }: ProfileStatsProps) => {
             badgeImage="/assets/icons/silverMedal.svg"
             badgeImageAlt="Silver Medal"
             badgeName="Silver Badges"
-            value={stats?.badges?.silver}
+            value={formatAndDivideNumber(stats?.badges?.silver)}
           />
         )}
         {stats?.badges?.bronze > 0 && (
@@ -97,7 +100,7 @@ const ProfileStats = ({ wrapperClassName, stats }: ProfileStatsProps) => {
             badgeImage="/assets/icons/bronzeMedal.svg"
             badgeImageAlt="Bronze Medal"
             badgeName="Bronze Badges"
-            value={stats?.badges?.bronze}
+            value={formatAndDivideNumber(stats?.badges?.bronze)}
           />
         )}
       </div>

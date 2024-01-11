@@ -24,7 +24,7 @@ const Page = async ({ params }: { params: ParamsType }) => {
           totalQuestions,
           badges: {
             bronze: 0,
-            gold: 0,
+            gold: 23423,
             silver: 0,
           },
         }}
