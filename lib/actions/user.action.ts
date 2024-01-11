@@ -14,6 +14,7 @@ import {
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 import tagModel from "@/database/tag.model";
+import Answer from "@/database/answer.model";
 
 export async function getUserById(params: { userId: string }) {
   try {
@@ -196,11 +197,15 @@ export const getProfileById = async (props: GetProfileByIdProps) => {
     const { userId } = props;
 
     const profile = await User.findById(userId);
+    const totalQuestions = await Question.countDocuments({
+      author: profile._id,
+    });
+    const totalAnswers = await Answer.countDocuments({ author: profile._id });
 
     profile.clerkId = null;
     profile.email = null;
 
-    return { profile };
+    return { profile, totalAnswers, totalQuestions };
   } catch (err) {
     console.log("ERROR_GET_PROFILE_BY_ID_ACTION", err);
     throw err;

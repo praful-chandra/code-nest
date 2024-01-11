@@ -12,7 +12,7 @@ type ProfileHeaderProps = {
 
 const ProfileHeader = async ({ user }: ProfileHeaderProps) => {
   const currentProfile = await getCurrentProfile();
-  const thisUser: UserType = JSON.parse(user).profile;
+  const thisUser: UserType = JSON.parse(user);
 
   return (
     <div className="flex-center flex-col flex-wrap md:flex-row md:items-start">
