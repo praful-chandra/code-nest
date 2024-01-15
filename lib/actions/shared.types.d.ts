@@ -7,6 +7,10 @@ export interface GetQuestionsParams {
   filter?: string;
 }
 
+export interface GetUserQuestionsParams extends GetQuestionsParams {
+  userId: string;
+}
+
 export interface CreateUserParams {
   clerkId: string;
   name: string;

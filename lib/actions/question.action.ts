@@ -6,7 +6,11 @@ import userModel from "@/database/user.model";
 import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "../mongoose";
 import { questionFormSchema } from "../validations";
-import { GetQuestionByIdParams, GetQuestionsParams } from "./shared.types";
+import {
+  GetQuestionByIdParams,
+  GetQuestionsParams,
+  GetUserQuestionsParams,
+} from "./shared.types";
 
 export async function createQuestion(newQuestionData: unknown) {
   try {
@@ -171,6 +175,32 @@ export const toggleDownvote = async (
     revalidatePath(path);
   } catch (err) {
     console.log("ERROR_TOGGLE_UPVOTE_QUESTION__:", err);
+    throw err;
+  }
+};
+
+export const getUserQuestions = async (params: GetUserQuestionsParams) => {
+  try {
+    connectToDatabase();
+
+    const { userId, page = 1, pageSize = 10 } = params;
+
+    const totalQuestions = await Question.countDocuments({ author: userId });
+    const questionsList = await Question.find({
+      author: userId,
+    })
+      .sort({ views: -1 })
+      .populate({
+        path: "tags",
+        model: tagModel,
+      })
+      .populate({ path: "author", model: userModel })
+      .limit(pageSize)
+      .skip((page - 1) * pageSize);
+
+    return { totalQuestions, questionsList };
+  } catch (err) {
+    console.log("ERROR_GET_USER_QUESTIONS:", err);
     throw err;
   }
 };
