@@ -17,13 +17,15 @@ const ProfileContent = ({ className, user }: ProfileContentProps) => {
       <Tabs defaultValue="top-posts" className="flex-1">
         <TabsList className="background-light800_dark400 min-h-[42px] p-1">
           <TabsTrigger value="top-posts" className="tab">
-            <TopPosts userId={thisUser._id} />
+            Top Posts
           </TabsTrigger>
           <TabsTrigger value="answers" className="tab">
             Answers
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="top-posts">Questions</TabsContent>
+        <TabsContent value="top-posts">
+          <TopPosts userId={thisUser._id} />
+        </TabsContent>
         <TabsContent value="answers" className="flex w-full flex-col gap-6">
           Answers
         </TabsContent>
