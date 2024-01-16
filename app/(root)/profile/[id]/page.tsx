@@ -1,3 +1,4 @@
+import ProfileContent from "@/components/profile/ProfileContent";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileStats from "@/components/profile/ProfileStats";
 import { getProfileById } from "@/lib/actions/user.action";
@@ -29,6 +30,7 @@ const Page = async ({ params }: { params: ParamsType }) => {
           },
         }}
       />
+      <ProfileContent className="mt-10" user={JSON.stringify(profile)} />
     </div>
   );
 };

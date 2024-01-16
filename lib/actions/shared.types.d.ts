@@ -68,3 +68,9 @@ export interface FetchTagByIdProps {
 export interface GetProfileByIdProps {
   userId: string;
 }
+
+export interface GetUserItemsWithPagination {
+  userId: string;
+  page?: number;
+  pageSize?: number;
+}
