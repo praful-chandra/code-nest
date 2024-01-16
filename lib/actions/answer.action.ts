@@ -159,7 +159,9 @@ export const getUserAnswers = async (params: GetUserItemsWithPagination) => {
     const answersList = await Answer.find({
       author: userId,
     })
-      .sort({ createdAt: -1 })
+      .sort({ upVotes: -1 })
+      .populate("question", "_id, title")
+      .populate("author", "_id name avatar")
       .limit(pageSize)
       .skip((page - 1) * pageSize);
 

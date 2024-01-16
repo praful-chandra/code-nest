@@ -44,6 +44,11 @@ export const sidebarLinks: SidebarLink[] = [
     route: "/jobs",
     label: "Find Jobs",
   },
+  {
+    imgURL: "/assets/icons/user.svg",
+    route: "/profile",
+    label: "Profile",
+  },
 
   {
     imgURL: "/assets/icons/question.svg",

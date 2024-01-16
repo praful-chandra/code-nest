@@ -1,24 +1,43 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { sidebarLinks } from "@/constants";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { getCurrentProfile } from "@/lib/currentProfile";
+import { IUser } from "@/database/user.model";
 
 type UseGetNavContentProps = {
   isDesktopMode: boolean;
 };
 
 export const useGetNavContent = ({ isDesktopMode }: UseGetNavContentProps) => {
+  const [currentProfile, setCurrentProfile] = useState<IUser | null>(null);
+
+  useEffect(() => {
+    if (!currentProfile) {
+      getCurrentProfile()
+        .then((res) => {
+          setCurrentProfile(res);
+        })
+        .catch();
+    }
+  }, [currentProfile]);
+
   const pathName = usePathname();
   return sidebarLinks?.map((sideItem) => {
     const isActive =
       (pathName.includes(sideItem.route) && sideItem?.route?.length > 1) ||
       pathName === sideItem.route;
 
+    if (sideItem.route === "/profile") {
+      if (currentProfile?._id) {
+        sideItem.route = `${sideItem.route}/${currentProfile?._id}`;
+      }
+    }
     return {
       key: sideItem?.route,
       component: (
