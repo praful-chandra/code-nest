@@ -7,10 +7,6 @@ export interface GetQuestionsParams {
   filter?: string;
 }
 
-export interface GetUserQuestionsParams extends GetQuestionsParams {
-  userId: string;
-}
-
 export interface CreateUserParams {
   clerkId: string;
   name: string;
@@ -71,4 +67,10 @@ export interface FetchTagByIdProps {
 
 export interface GetProfileByIdProps {
   userId: string;
+}
+
+export interface GetUserItemsWithPagination {
+  userId: string;
+  page?: number;
+  pageSize?: number;
 }

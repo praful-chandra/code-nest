@@ -6,6 +6,7 @@ import userModel from "@/database/user.model";
 import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "../mongoose";
 import { answerFormSchema } from "../validations";
+import { GetUserItemsWithPagination } from "./shared.types";
 
 export const answerQuestion = async (answerQuestionData: unknown) => {
   try {
@@ -144,6 +145,27 @@ export const downVoteAnswer = async (
     revalidatePath(path);
   } catch (err) {
     console.log("ERROR_UPVOTE_ANSWER__:", err);
+    throw err;
+  }
+};
+
+export const getUserAnswers = async (params: GetUserItemsWithPagination) => {
+  try {
+    connectToDatabase();
+
+    const { userId, page = 1, pageSize = 10 } = params;
+
+    const totalAnswers = await Answer.countDocuments({ author: userId });
+    const answersList = await Answer.find({
+      author: userId,
+    })
+      .sort({ createdAt: -1 })
+      .limit(pageSize)
+      .skip((page - 1) * pageSize);
+
+    return { totalAnswers, answersList };
+  } catch (err) {
+    console.log("ERROR_GET_USER_ANSWERS:", err);
     throw err;
   }
 };

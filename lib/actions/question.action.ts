@@ -9,7 +9,7 @@ import { questionFormSchema } from "../validations";
 import {
   GetQuestionByIdParams,
   GetQuestionsParams,
-  GetUserQuestionsParams,
+  GetUserItemsWithPagination,
 } from "./shared.types";
 
 export async function createQuestion(newQuestionData: unknown) {
@@ -179,7 +179,7 @@ export const toggleDownvote = async (
   }
 };
 
-export const getUserQuestions = async (params: GetUserQuestionsParams) => {
+export const getUserQuestions = async (params: GetUserItemsWithPagination) => {
   try {
     connectToDatabase();
 
