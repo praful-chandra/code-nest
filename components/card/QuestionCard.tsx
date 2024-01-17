@@ -5,16 +5,32 @@ import { QuestionType } from "@/types/primitive";
 import Link from "next/link";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 import Metric from "../shared/Metric";
+import { SignedIn } from "@clerk/nextjs";
+import CardActions from "./CardActions";
+import { getCurrentProfile } from "@/lib/currentProfile";
 
 type QuestionCardProps = {
   question: QuestionType;
 };
 
-const QuestionCard = ({ question }: QuestionCardProps) => {
+const QuestionCard = async ({ question }: QuestionCardProps) => {
   const { _id, answers, author, tags, createdAt, title, views, upVotes } =
     question;
+  const signedInUser = await getCurrentProfile();
+
   return (
-    <div className="card-wrapper text-dark100_light900 mb-6 w-full rounded-xl p-11 font-inter last:mb-0">
+    <div className="card-wrapper text-dark100_light900 relative mb-6 w-full rounded-xl p-11 font-inter last:mb-0">
+      <SignedIn>
+        {String(signedInUser?._id) === String(question?.author?._id) && (
+          <div className="absolute right-1 top-1">
+            <CardActions
+              type="question"
+              typeId={String(question?._id)}
+              authorId={String(question?.author?._id)}
+            />
+          </div>
+        )}
+      </SignedIn>
       {/* MOBILE TIME  */}
       <p className="subtle-regular text-dark400_light700 line-clamp-1 sm:hidden">
         {getTimestamp(createdAt)}

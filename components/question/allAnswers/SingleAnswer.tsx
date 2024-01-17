@@ -16,6 +16,7 @@ const SingleAnswer = async ({ answer }: SingleAnswerProps) => {
 
   return (
     <article>
+      <span id={`&quot;${answer?._id}&quot;`} className="hash-span" />
       <div className="flex items-center justify-between">
         <div className="flex  items-center justify-start ">
           <Image

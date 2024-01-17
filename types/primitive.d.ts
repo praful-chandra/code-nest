@@ -55,3 +55,7 @@ export interface QuestionType {
   __v: number;
   createdAt: Date;
 }
+
+export interface FullAnswerType extends AnswerType {
+  question: QuestionType;
+}

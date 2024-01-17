@@ -199,8 +199,12 @@ export const getProfileById = async (props: GetProfileByIdProps) => {
     const profile = await User.findById(userId);
     const totalQuestions = await Question.countDocuments({
       author: profile._id,
+      isDeleted: false,
     });
-    const totalAnswers = await Answer.countDocuments({ author: profile._id });
+    const totalAnswers = await Answer.countDocuments({
+      author: profile._id,
+      isDeleted: false,
+    });
 
     profile.clerkId = null;
     profile.email = null;

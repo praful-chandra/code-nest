@@ -82,7 +82,11 @@ const QuestionForm = ({ formMethods, onSubmit }: Props) => {
           onInputChange={onTagInputChange}
           noOptionComp={noTagComponent}
         />
-        <Button type="submit" disabled={formMethods.formState.isSubmitting}>
+        <Button
+          type="submit"
+          className="primary-gradient min-h-[46px] px-4 py-3 !text-light-900"
+          disabled={formMethods.formState.isSubmitting}
+        >
           {formMethods.formState.isSubmitting ? "Submitting.." : "Submit"}
         </Button>
       </form>

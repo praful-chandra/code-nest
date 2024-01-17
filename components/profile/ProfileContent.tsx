@@ -3,6 +3,7 @@ import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TopPosts from "./TopPosts";
 import { UserType } from "@/types/primitive";
+import UserAnswers from "./UserAnswers";
 
 type ProfileContentProps = {
   className?: string;
@@ -27,7 +28,7 @@ const ProfileContent = ({ className, user }: ProfileContentProps) => {
           <TopPosts userId={thisUser._id} />
         </TabsContent>
         <TabsContent value="answers" className="flex w-full flex-col gap-6">
-          Answers
+          <UserAnswers userId={thisUser._id} />
         </TabsContent>
       </Tabs>
     </div>

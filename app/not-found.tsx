@@ -1,6 +1,6 @@
 import NoResult from "@/components/shared/NoResult";
 
-const Loading = () => {
+const NoResultPage = () => {
   return (
     <div className="flex-center h-[100vh] w-full">
       <NoResult
@@ -13,4 +13,4 @@ const Loading = () => {
   );
 };
 
-export default Loading;
+export default NoResultPage;

@@ -10,6 +10,10 @@ export interface IQuestion extends Document {
   author: Schema.Types.ObjectId;
   answers: Schema.Types.ObjectId[];
   createdAt: Date;
+  isEdited: boolean;
+  editedAt: Date | null;
+  isDeleted: boolean;
+  deletedAt: Date;
 }
 
 const QuestionSchema = new Schema({
@@ -28,6 +32,10 @@ const QuestionSchema = new Schema({
   author: { type: Schema.Types.ObjectId, ref: "User" },
   answers: [{ type: Schema.Types.ObjectId, ref: "Answer" }],
   createdAt: { type: Date, default: Date.now },
+  isEdited: { type: Boolean, default: false },
+  editedAt: { type: Date, default: null },
+  isDeleted: { type: Boolean, default: false },
+  deletedAt: { type: Date, default: null },
 });
 
 const Question = models?.Question || model("Question", QuestionSchema);
