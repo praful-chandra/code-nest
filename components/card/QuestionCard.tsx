@@ -27,6 +27,7 @@ const QuestionCard = async ({ question }: QuestionCardProps) => {
               type="question"
               typeId={String(question?._id)}
               authorId={String(question?.author?._id)}
+              onEditRedirect={`/question/edit/${String(question?._id)}`}
             />
           </div>
         )}

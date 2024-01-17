@@ -5,14 +5,21 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { deleteAnswer } from "@/lib/actions/answer.action";
 import { deleteQuestion } from "@/lib/actions/question.action";
+import Link from "next/link";
 
 type CardActionProps = {
   type: "question" | "answer";
   typeId: string;
   authorId: string;
+  onEditRedirect?: string;
 };
 
-const CardActions = ({ type, typeId, authorId }: CardActionProps) => {
+const CardActions = ({
+  type,
+  typeId,
+  authorId,
+  onEditRedirect,
+}: CardActionProps) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const pathname = usePathname();
 
@@ -32,15 +39,18 @@ const CardActions = ({ type, typeId, authorId }: CardActionProps) => {
   return (
     <div className="flex-center">
       {type === "question" && (
-        <Button className="pr-[2px]">
-          <Image
-            src="/assets/icons/edit.svg"
-            width={16}
-            height={16}
-            alt="Edit"
-          />
-        </Button>
+        <Link href={onEditRedirect ?? ""}>
+          <Button className="pr-[2px]">
+            <Image
+              src="/assets/icons/edit.svg"
+              width={16}
+              height={16}
+              alt="Edit"
+            />
+          </Button>
+        </Link>
       )}
+
       <Button className="pl-[2px]" onClick={handleDelete} disabled={isDeleting}>
         <Image
           src="/assets/icons/trash.svg"

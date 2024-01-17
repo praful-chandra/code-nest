@@ -56,7 +56,9 @@ const QuestionForm = ({ formMethods, onSubmit }: Props) => {
           required
           placeholder="Enter 3 or more characters to search"
           onInputChange={onTagInputChange}
-          isOptionsLoading
+          noOptionComp={(_) => (
+            <span>Enter 3 or more characters to add a Tag</span>
+          )}
         />
         <Button
           type="submit"

@@ -1,6 +1,7 @@
 import * as z from "zod";
 
 export default z.object({
+  _id: z.string(),
   title: z
     .string()
     .min(5, "Title must be atlease 5 characters.")
@@ -16,7 +17,7 @@ export default z.object({
       })
     )
     .min(1, "There must be atleast one tag.")
-    .max(5, "There can only be 3 tags at most."),
+    .max(5, "There can only be 5 tags at most."),
   author: z.object({
     _id: z.string().min(1),
   }),

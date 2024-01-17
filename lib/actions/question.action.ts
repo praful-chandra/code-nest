@@ -8,6 +8,7 @@ import { connectToDatabase } from "../mongoose";
 import { questionFormSchema } from "../validations";
 import {
   DeleteQuestionProps,
+  EditQuestionProps,
   GetQuestionByIdParams,
   GetQuestionsParams,
   GetUserItemsWithPagination,
@@ -236,6 +237,50 @@ export const deleteQuestion = async (params: DeleteQuestionProps) => {
     );
 
     revalidatePath(path);
+  } catch (err) {
+    console.log("ERROR_DELETE_QUESTION:", err);
+    throw err;
+  }
+};
+
+export const editQuestion = async (params: EditQuestionProps) => {
+  try {
+    connectToDatabase();
+
+    const { questionId, thisAuthor, content, title, newTags, oldTags } = params;
+
+    const deletedTags = oldTags.filter((ot) => !newTags.includes(ot));
+
+    for (const dTags of deletedTags) {
+      await tagModel.findOneAndUpdate(
+        { name: { $regex: new RegExp(`^${dTags}$`, "i") } },
+        { $pull: { questions: questionId } },
+        { new: true }
+      );
+    }
+
+    const tagDocuments = [];
+
+    // create or get existing tag
+    for (const tag of newTags) {
+      const existingTag = await tagModel.findOneAndUpdate(
+        { name: { $regex: new RegExp(`^${tag}$`, "i") } },
+        { $setOnInsert: { name: tag }, $addToSet: { questions: questionId } },
+        { upsert: true, new: true }
+      );
+      tagDocuments.push(existingTag._id);
+    }
+
+    await Question.findOneAndUpdate(
+      { _id: questionId, author: thisAuthor },
+      {
+        title,
+        content,
+        tags: tagDocuments,
+        isEdited: true,
+        editedAt: Date.now(),
+      }
+    );
   } catch (err) {
     console.log("ERROR_DELETE_QUESTION:", err);
     throw err;
