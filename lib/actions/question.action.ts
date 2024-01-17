@@ -12,6 +12,7 @@ import {
   GetQuestionsParams,
   GetUserItemsWithPagination,
 } from "./shared.types";
+import Answer from "@/database/answer.model";
 
 export async function createQuestion(newQuestionData: unknown) {
   try {
@@ -220,10 +221,19 @@ export const deleteQuestion = async (params: DeleteQuestionProps) => {
 
     const { questionId, path } = params;
 
-    await Question.findByIdAndUpdate(questionId, {
-      isDeleted: true,
-      deletedAt: Date.now(),
-    });
+    await Question.findByIdAndUpdate(
+      questionId,
+      {
+        isDeleted: true,
+        deletedAt: Date.now(),
+      },
+      { new: true }
+    );
+
+    await Answer.updateMany(
+      { question: questionId },
+      { isDeleted: true, deletedAt: Date.now() }
+    );
 
     revalidatePath(path);
   } catch (err) {
