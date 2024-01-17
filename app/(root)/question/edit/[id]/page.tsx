@@ -4,6 +4,7 @@ import { SignedIn } from "@clerk/nextjs";
 import React from "react";
 import Question from "@/components/forms/askAQuestionForm";
 import { QuestionType } from "@/types/primitive";
+import NoResult from "@/components/shared/NoResult";
 
 type ParamsType = {
   id: string;
@@ -13,6 +14,22 @@ const page = async ({ params }: { params: ParamsType }) => {
   const currentProfile = await getCurrentProfile();
 
   const questionData: QuestionType = await getQuestionById({ questionId });
+
+  if (
+    !questionData ||
+    String(questionData?.author?._id) !== String(currentProfile?._id)
+  ) {
+    return (
+      <div className="flex-center h-[70vh] w-full">
+        <NoResult
+          title="You shouldn't be here"
+          content="This Question cannot be edited."
+          linkText="Go home"
+          link="/"
+        />
+      </div>
+    );
+  }
 
   return (
     <SignedIn>
