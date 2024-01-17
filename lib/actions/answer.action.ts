@@ -6,7 +6,7 @@ import userModel from "@/database/user.model";
 import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "../mongoose";
 import { answerFormSchema } from "../validations";
-import { GetUserItemsWithPagination } from "./shared.types";
+import { DeleteAnswerParams, GetUserItemsWithPagination } from "./shared.types";
 
 export const answerQuestion = async (answerQuestionData: unknown) => {
   try {
@@ -58,7 +58,10 @@ export const fetchAllAnswersToAQuestion = async (questionId: string) => {
       throw new Error("Invalid question");
     }
 
-    const allAnswers = await Answer.find({ question: questionId })
+    const allAnswers = await Answer.find({
+      question: questionId,
+      isDeleted: false,
+    })
       .sort({
         createdAt: -1,
       })
@@ -155,9 +158,13 @@ export const getUserAnswers = async (params: GetUserItemsWithPagination) => {
 
     const { userId, page = 1, pageSize = 10 } = params;
 
-    const totalAnswers = await Answer.countDocuments({ author: userId });
+    const totalAnswers = await Answer.countDocuments({
+      author: userId,
+      isDeleted: false,
+    });
     const answersList = await Answer.find({
       author: userId,
+      isDeleted: false,
     })
       .sort({ upVotes: -1 })
       .populate("question", "_id, title")
@@ -168,6 +175,24 @@ export const getUserAnswers = async (params: GetUserItemsWithPagination) => {
     return { totalAnswers, answersList };
   } catch (err) {
     console.log("ERROR_GET_USER_ANSWERS:", err);
+    throw err;
+  }
+};
+
+export const deleteAnswer = async (params: DeleteAnswerParams) => {
+  try {
+    connectToDatabase();
+
+    const { answerId, path } = params;
+
+    await Answer.findByIdAndUpdate(answerId, {
+      isDeleted: true,
+      deletedAt: Date.now(),
+    });
+
+    revalidatePath(path);
+  } catch (err) {
+    console.log("ERROR_DELETE_ANSWER:", err);
     throw err;
   }
 };

@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "../mongoose";
 import { questionFormSchema } from "../validations";
 import {
+  DeleteQuestionProps,
   GetQuestionByIdParams,
   GetQuestionsParams,
   GetUserItemsWithPagination,
@@ -73,7 +74,7 @@ export async function getQuestions(params: GetQuestionsParams) {
   try {
     connectToDatabase();
 
-    const questions = await Question.find({})
+    const questions = await Question.find({ isDeleted: false })
       .populate({
         path: "tags",
         model: tagModel,
@@ -96,7 +97,11 @@ export const getQuestionById = async (params: GetQuestionByIdParams) => {
       .populate("author")
       .populate("tags");
 
-    return question;
+    if (question.isDeleted === false) {
+      return question;
+    }
+
+    return null;
   } catch (err) {
     console.log("ERROR_GET_QUESTION_BY_ID_ACTION", err);
     throw err;
@@ -185,9 +190,13 @@ export const getUserQuestions = async (params: GetUserItemsWithPagination) => {
 
     const { userId, page = 1, pageSize = 10 } = params;
 
-    const totalQuestions = await Question.countDocuments({ author: userId });
+    const totalQuestions = await Question.countDocuments({
+      author: userId,
+      isDeleted: false,
+    });
     const questionsList = await Question.find({
       author: userId,
+      isDeleted: false,
     })
       .sort({ views: -1 })
       .populate({
@@ -201,6 +210,24 @@ export const getUserQuestions = async (params: GetUserItemsWithPagination) => {
     return { totalQuestions, questionsList };
   } catch (err) {
     console.log("ERROR_GET_USER_QUESTIONS:", err);
+    throw err;
+  }
+};
+
+export const deleteQuestion = async (params: DeleteQuestionProps) => {
+  try {
+    connectToDatabase();
+
+    const { questionId, path } = params;
+
+    await Question.findByIdAndUpdate(questionId, {
+      isDeleted: true,
+      deletedAt: Date.now(),
+    });
+
+    revalidatePath(path);
+  } catch (err) {
+    console.log("ERROR_DELETE_QUESTION:", err);
     throw err;
   }
 };

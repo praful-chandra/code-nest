@@ -74,3 +74,12 @@ export interface GetUserItemsWithPagination {
   page?: number;
   pageSize?: number;
 }
+
+export interface DeleteAnswerParams {
+  answerId: string;
+  path: string;
+}
+export interface DeleteQuestionProps {
+  questionId: string;
+  path: string;
+}
