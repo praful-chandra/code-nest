@@ -83,3 +83,12 @@ export interface DeleteQuestionProps {
   questionId: string;
   path: string;
 }
+
+export interface EditQuestionProps {
+  questionId: string;
+  thisAuthor: string;
+  title: string;
+  content: string;
+  newTags: string[];
+  oldTags: string[];
+}

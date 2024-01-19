@@ -1,6 +1,7 @@
 import AnswerAQuestionForm from "@/components/forms/answerAQuestionForm";
 import AllAnswers from "@/components/question/allAnswers";
 import Metric from "@/components/shared/Metric";
+import NoResult from "@/components/shared/NoResult";
 import ParseHtml from "@/components/shared/ParseHtml";
 import Tag from "@/components/shared/Tag";
 import VotingComp from "@/components/shared/VotingComp";
@@ -22,6 +23,19 @@ const Page = async ({ params }: { params: ParamsType }) => {
   const currentProfile = await getCurrentProfile();
 
   const questionData: QuestionType = await getQuestionById({ questionId });
+
+  if (!questionData) {
+    return (
+      <div className="flex-center h-[70vh] w-full">
+        <NoResult
+          title="Question not found"
+          content="The question you are searching for have been deleted."
+          linkText="Go home"
+          link="/"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className=" w-full max-w-[90dvw] overflow-hidden break-normal">

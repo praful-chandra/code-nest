@@ -54,3 +54,18 @@ export const fetchTagById = async (props: FetchTagByIdProps) => {
     throw err;
   }
 };
+
+export const fetchTagByPartialName = async (partialTagName: string) => {
+  try {
+    connectToDatabase();
+
+    const tags = await tagModel.find({
+      name: { $regex: new RegExp(`^${partialTagName}`, "i") },
+    });
+
+    return tags ?? [];
+  } catch (err) {
+    console.log("ERROR_FETCH_TAG_BY_PARTIAL_NAME_ACTION", err);
+    throw err;
+  }
+};

@@ -1,13 +1,14 @@
 import * as z from "zod";
 
 export default z.object({
+  _id: z.string(),
   title: z
     .string()
     .min(5, "Title must be atlease 5 characters.")
     .max(130, "Title must not be more than 130 characters."),
   description: z
     .string()
-    .min(20, "Description must have atleast 20 characters."),
+    .min(100, "Description must have atleast 100 characters."),
   tags: z
     .array(
       z.object({
@@ -16,7 +17,7 @@ export default z.object({
       })
     )
     .min(1, "There must be atleast one tag.")
-    .max(3, "There can only be 3 tags at most."),
+    .max(5, "There can only be 5 tags at most."),
   author: z.object({
     _id: z.string().min(1),
   }),
