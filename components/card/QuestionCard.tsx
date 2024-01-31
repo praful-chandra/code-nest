@@ -63,7 +63,7 @@ const QuestionCard = async ({ question }: QuestionCardProps) => {
             }
             width={20}
             height={20}
-            className="rounded-full"
+            className="h-[20px] w-[20px] rounded-full object-cover object-top"
             alt="display pic"
           />
           <p className="body-medium mx-1">

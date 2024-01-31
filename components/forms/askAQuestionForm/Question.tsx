@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -24,7 +24,10 @@ const Question = ({
   const pathname = usePathname();
   const router = useRouter();
 
-  const existingQuestionData: QuestionType = JSON.parse(existingData ?? "");
+  const existingQuestionData: QuestionType = useMemo(
+    () => (existingData ? JSON.parse(existingData) : {}),
+    [existingData]
+  );
 
   const onSubmit = async (vals: z.infer<typeof questionFormSchema>) => {
     if (!editMode) {

@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { UserType } from "@/types/primitive";
 import { getMonthAndYear } from "@/lib/utils";
 import { getCurrentProfile } from "@/lib/currentProfile";
+import Link from "next/link";
 
 type ProfileHeaderProps = {
   user: string;
@@ -26,7 +27,7 @@ const ProfileHeader = async ({ user }: ProfileHeaderProps) => {
           width="140"
           height="140"
           alt="user avatar"
-          className="rounded-full"
+          className="h-[140px] w-[140px] rounded-full object-cover object-top"
         />
       </div>
       <div className="flex-center ml-5 mt-3 flex-1 flex-col md:flex-row md:items-start">
@@ -65,9 +66,11 @@ const ProfileHeader = async ({ user }: ProfileHeaderProps) => {
         </div>
         {thisUser?._id === String(currentProfile?._id) && (
           <div className="mt-5 md:mt-0">
-            <Button className="paragraph-medium background-light800_dark400 text-dark300_light900 px-10 py-3">
-              Edit Profile
-            </Button>
+            <Link href="/profile/edit">
+              <Button className="paragraph-medium background-light800_dark400 text-dark300_light900 px-10 py-3">
+                Edit Profile
+              </Button>
+            </Link>
           </div>
         )}
       </div>
