@@ -26,7 +26,7 @@ const ProfileHeader = async ({ user }: ProfileHeaderProps) => {
           width="140"
           height="140"
           alt="user avatar"
-          className="rounded-full"
+          className="h-[140px] w-[140px] rounded-full object-cover object-top"
         />
       </div>
       <div className="flex-center ml-5 mt-3 flex-1 flex-col md:flex-row md:items-start">

@@ -49,7 +49,7 @@ const Page = async ({ params }: { params: ParamsType }) => {
             width={22}
             height={22}
             alt="user avatar"
-            className="rounded-full"
+            className="h-[22px] w-[22px] rounded-full object-cover object-top"
           />
           <p className="paragraph-semibold text-dark300_light700 capitalize">
             {questionData?.author?.name}
