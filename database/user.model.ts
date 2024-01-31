@@ -1,14 +1,14 @@
 import { Schema, Document, models, model } from "mongoose";
 
 export interface IUser extends Document {
-  clerkId: String;
-  name: String;
-  userName: String;
-  email: String;
-  bio?: String;
-  avatar?: String;
-  location?: String;
-  portfolioWebsite?: String;
+  clerkId: string;
+  name: string;
+  userName: string;
+  email: string;
+  bio?: string;
+  avatar?: string;
+  location?: string;
+  portfolioWebsite?: string;
   reputation?: Number;
   joinedDate: Date;
   questions: Schema.Types.ObjectId[];
