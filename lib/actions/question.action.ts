@@ -286,3 +286,21 @@ export const editQuestion = async (params: EditQuestionProps) => {
     throw err;
   }
 };
+
+export const getTopQuestions = async () => {
+  try {
+    connectToDatabase();
+
+    const topQuestions = await Question.find({})
+      .sort({
+        views: -1,
+        upVotes: -1,
+      })
+      .limit(5);
+
+    return topQuestions;
+  } catch (err) {
+    console.log("ERROR_FETCH_TOP_QUESTIONS:", err);
+    throw err;
+  }
+};
