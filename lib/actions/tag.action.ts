@@ -69,3 +69,26 @@ export const fetchTagByPartialName = async (partialTagName: string) => {
     throw err;
   }
 };
+
+export const getTopTags = async () => {
+  try {
+    connectToDatabase();
+
+    const topTags = await tagModel.aggregate([
+      {
+        $project: { name: 1, numberOfQuestions: { $size: "$questions" } },
+      },
+      {
+        $sort: { numberOfQuestions: -1 },
+      },
+      {
+        $limit: 5,
+      },
+    ]);
+
+    return topTags;
+  } catch (err) {
+    console.log("ERROR_FETCH_TOP_TAG_ACTION", err);
+    throw err;
+  }
+};
