@@ -9,6 +9,10 @@ export interface DropdownOption {
   value: string;
 }
 
+export interface SearchParamsProps {
+  searchParams: { [key: string]: string | undefined };
+}
+
 // -----------  FOR REACT SELECT ---------------------------------
 export type InputAction =
   | "set-value"

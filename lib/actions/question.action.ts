@@ -14,6 +14,7 @@ import {
   GetUserItemsWithPagination,
 } from "./shared.types";
 import Answer from "@/database/answer.model";
+import { FilterQuery } from "mongoose";
 
 export async function createQuestion(newQuestionData: unknown) {
   try {
@@ -76,7 +77,26 @@ export async function getQuestions(params: GetQuestionsParams) {
   try {
     connectToDatabase();
 
-    const questions = await Question.find({ isDeleted: false })
+    const { searchQuery } = params;
+
+    const query: FilterQuery<typeof Question> = {};
+
+    if (searchQuery) {
+      query.$or = [
+        {
+          title: { $regex: new RegExp(searchQuery, "i") },
+          content: { $regex: new RegExp(searchQuery, "i") },
+        },
+      ];
+    }
+
+    query.$and = [
+      {
+        isDeleted: false,
+      },
+    ];
+
+    const questions = await Question.find(query)
       .populate({
         path: "tags",
         model: tagModel,

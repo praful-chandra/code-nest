@@ -1,10 +1,11 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+import { cn, getUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 type LocalSearchProp = {
   name: string;
@@ -19,7 +20,36 @@ const LocalSearch = ({
   className,
   iconPosition = "left",
 }: LocalSearchProp) => {
-  const [searchVal, setSetsearchVal] = useState("");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const searchQuery = searchParams.get("query");
+
+  const [searchVal, setSetsearchVal] = useState(searchQuery || "");
+
+  useEffect(() => {
+    const debouncedUpdate = setTimeout(() => {
+      if (searchVal) {
+        const newUrl = getUrlQuery({
+          searchParams: searchParams.toString(),
+          key: "query",
+          value: searchVal,
+        });
+
+        router.push(newUrl, { scroll: false });
+      } else if (searchVal === "") {
+        const newUrl = removeKeysFromQuery({
+          params: searchParams.toString(),
+          keysToRemove: ["query"],
+        });
+
+        router.push(newUrl, { scroll: false });
+      }
+    }, 400);
+
+    return () => clearTimeout(debouncedUpdate);
+  }, [router, searchParams, searchVal]);
+
   return (
     <div
       className={cn(
