@@ -8,9 +8,12 @@ import Link from "next/link";
 import NoResult from "@/components/shared/NoResult";
 import { getQuestions } from "@/lib/actions/question.action";
 import { QuestionType } from "@/types/primitive";
+import { SearchParamsProps } from "@/types";
 
-const HomePage = async () => {
-  const questions = (await getQuestions({})) as unknown as {
+const HomePage = async ({ searchParams }: SearchParamsProps) => {
+  const questions = (await getQuestions({
+    searchQuery: searchParams?.query,
+  })) as unknown as {
     questions: QuestionType[];
   };
 

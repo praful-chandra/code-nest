@@ -1,7 +1,7 @@
 import * as z from "zod";
 
 export default z.object({
-  _id: z.string(),
+  _id: z.any(),
   title: z
     .string()
     .min(5, "Title must be atlease 5 characters.")

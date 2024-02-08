@@ -33,6 +33,8 @@ const QuestionForm = ({ formMethods, onSubmit }: Props) => {
     return [];
   };
 
+  console.log({ err: formMethods.formState.errors });
+
   return (
     <Form {...formMethods}>
       <form onSubmit={formMethods.handleSubmit(onSubmit)} className="space-y-8">
