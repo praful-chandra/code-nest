@@ -6,6 +6,7 @@ import {
   FetchUserTagsProps,
 } from "./shared.types";
 import { FilterQuery } from "mongoose";
+import Question from "@/database/question.model";
 
 export const fetchUserTags = async (props: FetchUserTagsProps) => {
   try {
@@ -49,10 +50,28 @@ export const fetchTagById = async (props: FetchTagByIdProps) => {
   try {
     connectToDatabase();
 
-    const { tagId } = props;
+    const { tagId, searchQuery } = props;
+
+    const query: FilterQuery<typeof Question> = {};
+
+    if (searchQuery) {
+      query.$or = [
+        {
+          title: { $regex: new RegExp(searchQuery, "i") },
+          content: { $regex: new RegExp(searchQuery, "i") },
+        },
+      ];
+    }
+
+    query.$and = [
+      {
+        isDeleted: false,
+      },
+    ];
 
     const tag = await tagModel.findById(tagId).populate({
       path: "questions",
+      match: query,
       options: {
         sort: { createdAt: -1 },
         populate: [{ path: "author" }, { path: "tags" }],
