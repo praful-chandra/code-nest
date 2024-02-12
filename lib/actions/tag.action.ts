@@ -5,6 +5,7 @@ import {
   FetchTagByIdProps,
   FetchUserTagsProps,
 } from "./shared.types";
+import { FilterQuery } from "mongoose";
 
 export const fetchUserTags = async (props: FetchUserTagsProps) => {
   try {
@@ -23,9 +24,19 @@ export const fetchAllTags = async (props: FetchAllTagsProps) => {
   try {
     connectToDatabase();
 
-    const { pageSize = 10 } = props;
+    const { pageSize = 10, searchQuery } = props;
 
-    const allTags = await tagModel.find().limit(pageSize);
+    const query: FilterQuery<typeof tagModel> = {};
+
+    if (searchQuery) {
+      query.$or = [
+        {
+          name: { $regex: new RegExp(searchQuery, "i") },
+        },
+      ];
+    }
+
+    const allTags = await tagModel.find(query).limit(pageSize);
 
     return allTags;
   } catch (err) {

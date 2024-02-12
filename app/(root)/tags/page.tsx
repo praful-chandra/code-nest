@@ -4,12 +4,15 @@ import Tag from "@/components/shared/Tag";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { tagFilters } from "@/constants/filters";
 import { fetchAllTags } from "@/lib/actions/tag.action";
+import { SearchParamsProps } from "@/types";
 import { TagType } from "@/types/primitive";
 import Link from "next/link";
 import React from "react";
 
-const Page = async () => {
-  const allTags: TagType[] = await fetchAllTags({});
+const Page = async ({ searchParams }: SearchParamsProps) => {
+  const allTags: TagType[] = await fetchAllTags({
+    searchQuery: searchParams?.query,
+  });
 
   return (
     <>
