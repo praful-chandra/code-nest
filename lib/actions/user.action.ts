@@ -15,7 +15,10 @@ import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 import tagModel from "@/database/tag.model";
 import Answer from "@/database/answer.model";
-import { CommunityFiltersEnums } from "@/constants/filters";
+import {
+  CommunityFiltersEnums,
+  HomePageFiltersEnums,
+} from "@/constants/filters";
 import console from "console";
 
 export async function getUserById(params: { userId: string }) {
@@ -190,7 +193,7 @@ export const fetchAllUserSavedQuestions = async (
   try {
     connectToDatabase();
 
-    const { userId, searchQuery } = params;
+    const { userId, searchQuery, filter } = params;
 
     const query: FilterQuery<typeof Question> = {};
 
@@ -209,11 +212,28 @@ export const fetchAllUserSavedQuestions = async (
       },
     ];
 
+    let sortOptions = {};
+
+    switch (filter) {
+      case HomePageFiltersEnums.newest:
+        sortOptions = { createdAt: -1 };
+        break;
+      case HomePageFiltersEnums.frequent:
+        sortOptions = { views: -1 };
+        break;
+      case HomePageFiltersEnums.unanswered:
+        query.answers = { $size: 0 };
+        break;
+
+      default:
+        break;
+    }
+
     const currentUser = await User.findById(userId).populate({
       path: "questions",
       match: query,
       options: {
-        sort: { createdAt: -1 },
+        sort: sortOptions,
       },
       populate: [
         { path: "tags", model: tagModel, select: "_id name" },
