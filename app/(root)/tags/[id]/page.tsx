@@ -5,6 +5,7 @@ import NoResult from "@/components/shared/NoResult";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { homePageFilters } from "@/constants/filters";
 import { fetchTagById } from "@/lib/actions/tag.action";
+import { SearchParamsType } from "@/types";
 import { QuestionType, TagType } from "@/types/primitive";
 import React from "react";
 
@@ -12,10 +13,19 @@ type ParamsType = {
   id: string;
 };
 
-const Page = async ({ params }: { params: ParamsType }) => {
+const Page = async ({
+  params,
+  searchParams,
+}: {
+  params: ParamsType;
+  searchParams: SearchParamsType;
+}) => {
   const { id: tagId } = params;
 
-  const currentTag = (await fetchTagById({ tagId })) as TagType;
+  const currentTag = (await fetchTagById({
+    tagId,
+    searchQuery: searchParams?.query,
+  })) as TagType;
   console.log({ currentTag });
 
   return (

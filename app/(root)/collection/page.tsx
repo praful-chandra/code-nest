@@ -7,12 +7,14 @@ import NoResult from "@/components/shared/NoResult";
 import { QuestionType } from "@/types/primitive";
 import { fetchAllUserSavedQuestions } from "@/lib/actions/user.action";
 import { getCurrentProfile } from "@/lib/currentProfile";
+import { SearchParamsProps } from "@/types";
 
-const Page = async () => {
+const Page = async ({ searchParams }: SearchParamsProps) => {
   const currentProfile = await getCurrentProfile();
 
   const questions = await fetchAllUserSavedQuestions({
     userId: currentProfile?._id,
+    searchQuery: searchParams?.query,
   });
 
   return (

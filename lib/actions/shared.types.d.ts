@@ -63,6 +63,7 @@ export interface ViewQuestionParams {
 
 export interface FetchTagByIdProps {
   tagId: string;
+  searchQuery?: string;
 }
 
 export interface GetProfileByIdProps {
