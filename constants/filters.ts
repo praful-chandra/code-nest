@@ -5,6 +5,12 @@ export enum HomePageFiltersEnums {
   "unanswered" = "unanswered",
 }
 
+export enum CommunityFiltersEnums {
+  "new_users" = "new_users",
+  "old_users" = "old_users",
+  "top_contributors" = "top_contributors",
+}
+
 export const homePageFilters = [
   { label: "Newest", value: HomePageFiltersEnums.newest },
   { label: "Recommended", value: HomePageFiltersEnums.recommended },

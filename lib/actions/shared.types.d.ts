@@ -24,7 +24,7 @@ export interface UpdateUserParams {
 export interface FetchAllUserProps {
   page?: number;
   pageSize?: number;
-  flter?: string;
+  filter?: string;
   searchQuery?: string;
 }
 export interface FetchAllTagsProps {

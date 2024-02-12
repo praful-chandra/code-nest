@@ -11,6 +11,7 @@ import React from "react";
 const Page = async ({ searchParams }: SearchParamsProps) => {
   const allUsers: UserType[] = await fetchAllUser({
     searchQuery: searchParams?.query,
+    filter: searchParams?.filter,
   });
   return (
     <>

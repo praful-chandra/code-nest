@@ -15,6 +15,8 @@ import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 import tagModel from "@/database/tag.model";
 import Answer from "@/database/answer.model";
+import { CommunityFiltersEnums } from "@/constants/filters";
+import console from "console";
 
 export async function getUserById(params: { userId: string }) {
   try {
@@ -94,7 +96,7 @@ export const fetchAllUser = async (props: FetchAllUserProps) => {
   try {
     connectToDatabase();
 
-    const { pageSize = 10, searchQuery } = props;
+    const { pageSize = 10, searchQuery, filter } = props;
 
     const query: FilterQuery<typeof User> = {};
 
@@ -109,12 +111,27 @@ export const fetchAllUser = async (props: FetchAllUserProps) => {
 
     query.$and = [
       {
-        createdAt: -1,
         isDeleted: false,
       },
     ];
 
-    const allUsers = await User.find(query).limit(pageSize);
+    let sortOptions = {};
+
+    switch (filter) {
+      case CommunityFiltersEnums.new_users:
+        sortOptions = { joinedDate: -1 };
+        break;
+      case CommunityFiltersEnums.old_users:
+        sortOptions = { joinedDate: 1 };
+        break;
+      case CommunityFiltersEnums.top_contributors:
+        sortOptions = { reputation: -1 };
+        break;
+      default:
+        break;
+    }
+
+    const allUsers = await User.find(query).sort(sortOptions).limit(pageSize);
 
     return allUsers;
   } catch (err) {
