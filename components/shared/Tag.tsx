@@ -10,6 +10,7 @@ interface TagProps {
   active?: boolean;
   variant?: "regular" | "soft";
   disabled?: boolean;
+  handleOnClick?: (e: React.MouseEvent) => void;
 }
 
 const Tag = ({
@@ -20,6 +21,7 @@ const Tag = ({
   active = false,
   variant = "regular",
   disabled = false,
+  handleOnClick,
 }: TagProps) => {
   return (
     <Link
@@ -35,6 +37,7 @@ const Tag = ({
           : "background-light800_dark300"
       )}
       aria-disabled={disabled}
+      onClick={handleOnClick}
     >
       {text}
     </Link>

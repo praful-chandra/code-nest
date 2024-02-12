@@ -1,8 +1,15 @@
+export enum HomePageFiltersEnums {
+  "newest" = "newest",
+  "recommended" = "recommended",
+  "frequent" = "frequent",
+  "unanswered" = "unanswered",
+}
+
 export const homePageFilters = [
-  { label: "Newest", value: "newest" },
-  { label: "Recommended", value: "recommended" },
-  { label: "Frequent", value: "frequent" },
-  { label: "Unanswered", value: "unanswered" },
+  { label: "Newest", value: HomePageFiltersEnums.newest },
+  { label: "Recommended", value: HomePageFiltersEnums.recommended },
+  { label: "Frequent", value: HomePageFiltersEnums.frequent },
+  { label: "Unanswered", value: HomePageFiltersEnums.unanswered },
 ];
 
 export const communityFilters = [
