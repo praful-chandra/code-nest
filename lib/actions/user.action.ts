@@ -175,9 +175,22 @@ export const fetchAllUserSavedQuestions = async (
 
     const { userId, searchQuery } = params;
 
-    const query: FilterQuery<typeof Question> = searchQuery
-      ? { title: { $regex: new RegExp(searchQuery, "i") } }
-      : {};
+    const query: FilterQuery<typeof Question> = {};
+
+    if (searchQuery) {
+      query.$or = [
+        {
+          title: { $regex: new RegExp(searchQuery, "i") },
+          content: { $regex: new RegExp(searchQuery, "i") },
+        },
+      ];
+    }
+
+    query.$and = [
+      {
+        isDeleted: false,
+      },
+    ];
 
     const currentUser = await User.findById(userId).populate({
       path: "questions",
