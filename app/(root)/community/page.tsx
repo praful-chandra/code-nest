@@ -3,12 +3,15 @@ import Filters from "@/components/shared/Filters";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { communityFilters } from "@/constants/filters";
 import { fetchAllUser } from "@/lib/actions/user.action";
+import { SearchParamsProps } from "@/types";
 import { UserType } from "@/types/primitive";
 import Link from "next/link";
 import React from "react";
 
-const Page = async () => {
-  const allUsers: UserType[] = await fetchAllUser({});
+const Page = async ({ searchParams }: SearchParamsProps) => {
+  const allUsers: UserType[] = await fetchAllUser({
+    searchQuery: searchParams?.query,
+  });
   return (
     <>
       <h1 className="h1-bold text-dark100_light900">Community</h1>

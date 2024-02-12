@@ -94,11 +94,27 @@ export const fetchAllUser = async (props: FetchAllUserProps) => {
   try {
     connectToDatabase();
 
-    const { pageSize = 10 } = props;
+    const { pageSize = 10, searchQuery } = props;
 
-    const allUsers = await User.find({ createdAt: -1, isDeleted: false }).limit(
-      pageSize
-    );
+    const query: FilterQuery<typeof User> = {};
+
+    if (searchQuery) {
+      query.$or = [
+        {
+          name: { $regex: new RegExp(searchQuery, "i") },
+          userName: { $regex: new RegExp(searchQuery, "i") },
+        },
+      ];
+    }
+
+    query.$and = [
+      {
+        createdAt: -1,
+        isDeleted: false,
+      },
+    ];
+
+    const allUsers = await User.find(query).limit(pageSize);
 
     return allUsers;
   } catch (err) {
