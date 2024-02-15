@@ -12,6 +12,7 @@ import React from "react";
 const Page = async ({ searchParams }: SearchParamsProps) => {
   const allTags: TagType[] = await fetchAllTags({
     searchQuery: searchParams?.query,
+    filter: searchParams?.filter,
   });
 
   return (

@@ -11,6 +11,13 @@ export enum CommunityFiltersEnums {
   "top_contributors" = "top_contributors",
 }
 
+export enum TagFiltersEnums {
+  "popular" = "popular",
+  "recent" = "recent",
+  "name" = "name",
+  "old" = "old",
+}
+
 export const homePageFilters = [
   { label: "Newest", value: HomePageFiltersEnums.newest },
   { label: "Recommended", value: HomePageFiltersEnums.recommended },
@@ -25,10 +32,10 @@ export const communityFilters = [
 ];
 
 export const tagFilters = [
-  { label: "Popular", value: "popular" },
-  { label: "Recent", value: "recent" },
-  { label: "label", value: "name" },
-  { label: "Old", value: "old" },
+  { label: "Popular", value: TagFiltersEnums.popular },
+  { label: "Recent", value: TagFiltersEnums.recent },
+  { label: "label", value: TagFiltersEnums.name },
+  { label: "Old", value: TagFiltersEnums.old },
 ];
 
 export const AnswerFilters = [

@@ -7,6 +7,7 @@ import {
 } from "./shared.types";
 import { FilterQuery } from "mongoose";
 import Question from "@/database/question.model";
+import { TagFiltersEnums } from "@/constants/filters";
 
 export const fetchUserTags = async (props: FetchUserTagsProps) => {
   try {
@@ -25,7 +26,7 @@ export const fetchAllTags = async (props: FetchAllTagsProps) => {
   try {
     connectToDatabase();
 
-    const { pageSize = 10, searchQuery } = props;
+    const { pageSize = 10, searchQuery, filter } = props;
 
     const query: FilterQuery<typeof tagModel> = {};
 
@@ -37,7 +38,29 @@ export const fetchAllTags = async (props: FetchAllTagsProps) => {
       ];
     }
 
-    const allTags = await tagModel.find(query).limit(pageSize);
+    let sortOptions = {};
+
+    switch (filter) {
+      case TagFiltersEnums.popular:
+        sortOptions = { questions: -1 };
+        break;
+      case TagFiltersEnums.name:
+        sortOptions = { name: 1 };
+        break;
+      case TagFiltersEnums.old:
+        sortOptions = { createdAt: 1 };
+        break;
+      case TagFiltersEnums.recent:
+        sortOptions = { createdAt: -1 };
+        break;
+      default:
+        break;
+    }
+
+    const allTags = await tagModel
+      .find(query)
+      .sort(sortOptions)
+      .limit(pageSize);
 
     return allTags;
   } catch (err) {
