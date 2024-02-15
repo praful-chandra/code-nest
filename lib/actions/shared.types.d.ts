@@ -24,7 +24,7 @@ export interface UpdateUserParams {
 export interface FetchAllUserProps {
   page?: number;
   pageSize?: number;
-  flter?: string;
+  filter?: string;
   searchQuery?: string;
 }
 export interface FetchAllTagsProps {
@@ -92,4 +92,11 @@ export interface EditQuestionProps {
   content: string;
   newTags: string[];
   oldTags: string[];
+}
+
+export interface FetchAllAnswersToAQuestionProps {
+  questionId: string;
+  page?: number;
+  pageSize?: number;
+  filter?: string;
 }

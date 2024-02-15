@@ -13,6 +13,7 @@ import { SearchParamsProps } from "@/types";
 const HomePage = async ({ searchParams }: SearchParamsProps) => {
   const questions = (await getQuestions({
     searchQuery: searchParams?.query,
+    filter: searchParams?.filter,
   })) as unknown as {
     questions: QuestionType[];
   };

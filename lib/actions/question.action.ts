@@ -15,6 +15,7 @@ import {
 } from "./shared.types";
 import Answer from "@/database/answer.model";
 import { FilterQuery } from "mongoose";
+import { HomePageFiltersEnums } from "@/constants/filters";
 
 export async function createQuestion(newQuestionData: unknown) {
   try {
@@ -77,7 +78,7 @@ export async function getQuestions(params: GetQuestionsParams) {
   try {
     connectToDatabase();
 
-    const { searchQuery } = params;
+    const { searchQuery, filter } = params;
 
     const query: FilterQuery<typeof Question> = {};
 
@@ -90,7 +91,25 @@ export async function getQuestions(params: GetQuestionsParams) {
       ];
     }
 
+    let sortOptions = {};
+
+    switch (filter) {
+      case HomePageFiltersEnums.newest:
+        sortOptions = { createdAt: -1 };
+        break;
+      case HomePageFiltersEnums.frequent:
+        sortOptions = { views: -1 };
+        break;
+      case HomePageFiltersEnums.unanswered:
+        query.answers = { $size: 0 };
+        break;
+
+      default:
+        break;
+    }
+
     query.$and = [
+      ...(query?.$and ?? []),
       {
         isDeleted: false,
       },
@@ -102,7 +121,7 @@ export async function getQuestions(params: GetQuestionsParams) {
         model: tagModel,
       })
       .populate({ path: "author", model: userModel })
-      .sort({ createdAt: -1 });
+      .sort(sortOptions);
 
     return { questions };
   } catch (err) {

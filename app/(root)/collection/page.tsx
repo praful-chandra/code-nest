@@ -1,4 +1,3 @@
-import { DesktopFilters } from "@/components/Home/homePageFilters";
 import Filters from "@/components/shared/Filters";
 import { QuestionCard } from "@/components/card";
 import LocalSearch from "@/components/shared/search/LocalSearch";
@@ -15,6 +14,7 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
   const questions = await fetchAllUserSavedQuestions({
     userId: currentProfile?._id,
     searchQuery: searchParams?.query,
+    filter: searchParams?.filter,
   });
 
   return (
@@ -28,17 +28,12 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
           name="searchQuestions"
           placeHolder="Search for Questions"
         />
-        <div className="hidden max-md:block">
-          <Filters
-            filterOptions={homePageFilters}
-            otherClasses="min-h-[56px] sm:min-w-[170px]"
-            containerClasses="hidden max-md:flex"
-          />
-        </div>
+        <Filters
+          filterOptions={homePageFilters}
+          otherClasses="min-h-[56px] sm:min-w-[170px]"
+        />
       </div>
-      <div className="mt-7 flex max-md:hidden">
-        <DesktopFilters />
-      </div>
+
       <div className="mt-10">
         {questions?.questions?.length ? (
           questions?.questions.map((que: QuestionType) => (
