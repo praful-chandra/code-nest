@@ -7,10 +7,16 @@ import SingleAnswer from "./SingleAnswer";
 
 type AllAnswersProps = {
   questionId: string;
+  sortParam?: string;
 };
 
-const AllAnswers = async ({ questionId }: AllAnswersProps) => {
-  const allAnswers = (await fetchAllAnswersToAQuestion(questionId)) as {
+const AllAnswers = async ({ questionId, sortParam }: AllAnswersProps) => {
+  console.log({ sortParam });
+
+  const allAnswers = (await fetchAllAnswersToAQuestion({
+    questionId,
+    filter: sortParam,
+  })) as {
     answers: AnswerType[];
   };
 

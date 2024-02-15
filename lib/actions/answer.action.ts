@@ -6,7 +6,12 @@ import userModel from "@/database/user.model";
 import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "../mongoose";
 import { answerFormSchema } from "../validations";
-import { DeleteAnswerParams, GetUserItemsWithPagination } from "./shared.types";
+import {
+  DeleteAnswerParams,
+  FetchAllAnswersToAQuestionProps,
+  GetUserItemsWithPagination,
+} from "./shared.types";
+import { AnswerFiltersEnums } from "@/constants/filters";
 
 export const answerQuestion = async (answerQuestionData: unknown) => {
   try {
@@ -48,9 +53,13 @@ export const answerQuestion = async (answerQuestionData: unknown) => {
   }
 };
 
-export const fetchAllAnswersToAQuestion = async (questionId: string) => {
+export const fetchAllAnswersToAQuestion = async (
+  props: FetchAllAnswersToAQuestionProps
+) => {
   try {
     connectToDatabase();
+
+    const { questionId, filter } = props;
 
     const currentQuestion = await Question.findById(questionId);
 
@@ -58,13 +67,32 @@ export const fetchAllAnswersToAQuestion = async (questionId: string) => {
       throw new Error("Invalid question");
     }
 
+    let sortOptions = {};
+
+    switch (filter) {
+      case AnswerFiltersEnums.highestUpvotes:
+        sortOptions = { upVotes: -1 };
+        break;
+      case AnswerFiltersEnums.lowestUpvotes:
+        sortOptions = { upVotes: 1 };
+        break;
+      case AnswerFiltersEnums.recent:
+        sortOptions = { createdAt: -1 };
+        break;
+      case AnswerFiltersEnums.old:
+        sortOptions = { createdAt: 1 };
+        break;
+
+      default:
+        sortOptions = { createdAt: -1 };
+        break;
+    }
+
     const allAnswers = await Answer.find({
       question: questionId,
       isDeleted: false,
     })
-      .sort({
-        createdAt: -1,
-      })
+      .sort(sortOptions)
       .populate({
         path: "author",
         model: userModel,

@@ -18,6 +18,13 @@ export enum TagFiltersEnums {
   "old" = "old",
 }
 
+export enum AnswerFiltersEnums {
+  "highestUpvotes" = "highestUpvotes",
+  "lowestUpvotes" = "lowestUpvotes",
+  "recent" = "recent",
+  "old" = "old",
+}
+
 export const homePageFilters = [
   { label: "Newest", value: HomePageFiltersEnums.newest },
   { label: "Recommended", value: HomePageFiltersEnums.recommended },
@@ -39,8 +46,8 @@ export const tagFilters = [
 ];
 
 export const AnswerFilters = [
-  { label: "Highest Upvotes", value: "highestUpvotes" },
-  { label: "Lowest Upvotes", value: "lowestUpvotes" },
-  { label: "Most Recent", value: "recent" },
-  { label: "Oldest", value: "old" },
+  { label: "Highest Upvotes", value: AnswerFiltersEnums.highestUpvotes },
+  { label: "Lowest Upvotes", value: AnswerFiltersEnums.lowestUpvotes },
+  { label: "Most Recent", value: AnswerFiltersEnums.recent },
+  { label: "Oldest", value: AnswerFiltersEnums.old },
 ];

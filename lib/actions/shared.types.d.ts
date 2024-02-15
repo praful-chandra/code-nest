@@ -93,3 +93,10 @@ export interface EditQuestionProps {
   newTags: string[];
   oldTags: string[];
 }
+
+export interface FetchAllAnswersToAQuestionProps {
+  questionId: string;
+  page?: number;
+  pageSize?: number;
+  filter?: string;
+}

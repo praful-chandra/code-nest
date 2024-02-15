@@ -8,6 +8,7 @@ import VotingComp from "@/components/shared/VotingComp";
 import { getQuestionById } from "@/lib/actions/question.action";
 import { getCurrentProfile } from "@/lib/currentProfile";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
+import { SearchParamsType } from "@/types";
 import { QuestionType } from "@/types/primitive";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import Image from "next/image";
@@ -18,7 +19,13 @@ type ParamsType = {
   id: string;
 };
 
-const Page = async ({ params }: { params: ParamsType }) => {
+const Page = async ({
+  params,
+  searchParams,
+}: {
+  params: ParamsType;
+  searchParams: SearchParamsType;
+}) => {
   const { id: questionId } = params;
   const currentProfile = await getCurrentProfile();
 
@@ -111,7 +118,7 @@ const Page = async ({ params }: { params: ParamsType }) => {
       </div>
 
       <div className="mt-8">
-        <AllAnswers questionId={questionId} />
+        <AllAnswers questionId={questionId} sortParam={searchParams?.filter} />
       </div>
 
       <div className="mt-8">
