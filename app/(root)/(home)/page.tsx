@@ -9,6 +9,7 @@ import NoResult from "@/components/shared/NoResult";
 import { getQuestions } from "@/lib/actions/question.action";
 import { QuestionType } from "@/types/primitive";
 import { SearchParamsProps } from "@/types";
+import PaginationComp from "@/components/shared/Pagination";
 
 const HomePage = async ({ searchParams }: SearchParamsProps) => {
   const questions = (await getQuestions({
@@ -62,6 +63,7 @@ const HomePage = async ({ searchParams }: SearchParamsProps) => {
           />
         )}
       </div>
+      <PaginationComp className="mt-10" totalPages={6} />
     </>
   );
 };
