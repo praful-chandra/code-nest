@@ -1,16 +1,19 @@
+
 import { cn } from "@/lib/utils";
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TopPosts from "./TopPosts";
 import { UserType } from "@/types/primitive";
 import UserAnswers from "./UserAnswers";
+import {SearchParamsType} from "@/types";
 
 type ProfileContentProps = {
   className?: string;
   user: string;
+  searchParams: SearchParamsType;
 };
 
-const ProfileContent = ({ className, user }: ProfileContentProps) => {
+const ProfileContent = ({ className, user, searchParams }: ProfileContentProps) => {
   const thisUser: UserType = JSON.parse(user);
 
   return (
@@ -25,10 +28,10 @@ const ProfileContent = ({ className, user }: ProfileContentProps) => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="top-posts">
-          <TopPosts userId={thisUser._id} />
+          <TopPosts userId={thisUser._id} searchParams={searchParams}/>
         </TabsContent>
         <TabsContent value="answers" className="flex w-full flex-col gap-6">
-          <UserAnswers userId={thisUser._id} />
+          <UserAnswers userId={thisUser._id} searchParams={searchParams} />
         </TabsContent>
       </Tabs>
     </div>

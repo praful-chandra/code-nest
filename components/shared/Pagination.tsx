@@ -15,19 +15,21 @@ import { useSearchParams, useRouter } from "next/navigation";
 
 type PaginationCompProps = {
   className?: string;
-  totalItems?: number;
+  customQueryName?: string;
   itemsPerPage?: number;
+  totalItems?: number;
 };
 
 const PaginationComp = ({
   className,
   totalItems = 1,
   itemsPerPage = 5,
+    customQueryName= "page",
 }: PaginationCompProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const pageQuery = searchParams.get("page");
+  const pageQuery = searchParams.get(customQueryName);
 
   const [currentPage, setCurrentPage] = useState(
     typeof Number(pageQuery) === "number" && Number(pageQuery) > 0
@@ -43,7 +45,7 @@ const PaginationComp = ({
     () => (value: string) => {
       const newUrl = getUrlQuery({
         searchParams: searchParams.toString(),
-        key: "page",
+        key: customQueryName,
         value,
       });
       router.push(newUrl, { scroll: false });
