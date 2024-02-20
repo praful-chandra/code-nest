@@ -3,12 +3,13 @@ import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileStats from "@/components/profile/ProfileStats";
 import { getProfileById } from "@/lib/actions/user.action";
 import React from "react";
+import {SearchParamsType} from "@/types";
 
 type ParamsType = {
   id: string;
 };
 
-const Page = async ({ params }: { params: ParamsType }) => {
+const Page = async ({ params, searchParams }: { params: ParamsType, searchParams: SearchParamsType }) => {
   const { id: profileId } = params;
 
   const { profile, totalAnswers, totalQuestions } = await getProfileById({
@@ -30,7 +31,7 @@ const Page = async ({ params }: { params: ParamsType }) => {
           },
         }}
       />
-      <ProfileContent className="mt-10" user={JSON.stringify(profile)} />
+      <ProfileContent className="mt-10" user={JSON.stringify(profile)} searchParams={searchParams} />
     </div>
   );
 };
