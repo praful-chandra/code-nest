@@ -15,8 +15,11 @@ const HomePage = async ({ searchParams }: SearchParamsProps) => {
   const questions = (await getQuestions({
     searchQuery: searchParams?.query,
     filter: searchParams?.filter,
+    page: Number(searchParams?.page),
+    pageSize: 5,
   })) as unknown as {
     questions: QuestionType[];
+    totalQuestions: number;
   };
 
   return (
@@ -63,7 +66,11 @@ const HomePage = async ({ searchParams }: SearchParamsProps) => {
           />
         )}
       </div>
-      <PaginationComp className="mt-10" totalPages={6} />
+      <PaginationComp
+        className="mt-10"
+        totalItems={questions.totalQuestions}
+        itemsPerPage={5}
+      />
     </>
   );
 };

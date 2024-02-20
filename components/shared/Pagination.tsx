@@ -15,19 +15,28 @@ import { useSearchParams, useRouter } from "next/navigation";
 
 type PaginationCompProps = {
   className?: string;
-  totalPages?: number;
+  totalItems?: number;
+  itemsPerPage?: number;
 };
 
-const PaginationComp = ({ className, totalPages = 1 }: PaginationCompProps) => {
+const PaginationComp = ({
+  className,
+  totalItems = 1,
+  itemsPerPage = 5,
+}: PaginationCompProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const pageQuery = searchParams.get("page");
 
   const [currentPage, setCurrentPage] = useState(
-    pageQuery ? Number(pageQuery) : 1
+    typeof Number(pageQuery) === "number" && Number(pageQuery) > 0
+      ? Number(pageQuery)
+      : 1
   );
   const [toShowPages, setToShowPages] = useState(0);
+
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
   const totalSetOfPages = Math.ceil(totalPages / 5);
 
   const handlePageChange = useMemo(
