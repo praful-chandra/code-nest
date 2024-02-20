@@ -198,7 +198,7 @@ export const fetchAllUserSavedQuestions = async (
   try {
     connectToDatabase();
 
-    const { userId, searchQuery, filter } = params;
+    const { userId, searchQuery, filter, pageSize = 5, page = 1 } = params;
 
     const query: FilterQuery<typeof Question> = {};
 
@@ -238,6 +238,8 @@ export const fetchAllUserSavedQuestions = async (
       path: "questions",
       match: query,
       options: {
+        limit: pageSize,
+        skip: (page - 1) * pageSize,
         sort: sortOptions,
       },
       populate: [
@@ -250,12 +252,17 @@ export const fetchAllUserSavedQuestions = async (
       ],
     });
 
+    const totalQuestions = await User.findById(userId).countDocuments({
+      path: "questions",
+    });
+
     if (!currentUser) {
       throw new Error("Some error occured!.");
     }
 
     const savedQuestions = currentUser.questions;
-    return { questions: savedQuestions };
+
+    return { questions: savedQuestions, totalQuestions };
   } catch (err) {
     console.log("ERROR_FETCH_ALL_USER_SAVED_QUESTION_ACTION", err);
     throw err;
