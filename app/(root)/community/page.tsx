@@ -1,5 +1,6 @@
 import { UserCard } from "@/components/card";
 import Filters from "@/components/shared/Filters";
+import PaginationComp from "@/components/shared/Pagination";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { communityFilters } from "@/constants/filters";
 import { fetchAllUser } from "@/lib/actions/user.action";
@@ -9,10 +10,15 @@ import Link from "next/link";
 import React from "react";
 
 const Page = async ({ searchParams }: SearchParamsProps) => {
-  const allUsers: UserType[] = await fetchAllUser({
+  const usersQueryResult = (await fetchAllUser({
     searchQuery: searchParams?.query,
     filter: searchParams?.filter,
-  });
+    page: Number(searchParams?.page),
+    pageSize: 6,
+  })) as {
+    allUsers: UserType[];
+    totalCountUser: number;
+  };
   return (
     <>
       <h1 className="h1-bold text-dark100_light900">Community</h1>
@@ -30,8 +36,10 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
       </div>
 
       <section className="mt-12 flex flex-wrap gap-4">
-        {allUsers.length > 0 ? (
-          allUsers.map((user) => <UserCard key={user._id} user={user} />)
+        {usersQueryResult?.allUsers?.length > 0 ? (
+          usersQueryResult?.allUsers.map((user) => (
+            <UserCard key={user._id} user={user} />
+          ))
         ) : (
           <div className="paragraph-regular text-dark200_light800 mx-auto max-w-4xl text-center">
             <p>No users yet</p>
@@ -41,6 +49,12 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
           </div>
         )}
       </section>
+
+      <PaginationComp
+        className="mt-10"
+        itemsPerPage={6}
+        totalItems={usersQueryResult?.totalCountUser}
+      />
     </>
   );
 };

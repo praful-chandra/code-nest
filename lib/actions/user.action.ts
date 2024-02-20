@@ -1,6 +1,6 @@
 "use server";
 
-import { FilterQuery } from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 import { connectToDatabase } from "../mongoose";
 import User from "@/database/user.model";
 import {
@@ -99,7 +99,7 @@ export const fetchAllUser = async (props: FetchAllUserProps) => {
   try {
     connectToDatabase();
 
-    const { pageSize = 10, searchQuery, filter } = props;
+    const { pageSize = 6, page = 1, searchQuery, filter } = props;
 
     const query: FilterQuery<typeof User> = {};
 
@@ -134,9 +134,14 @@ export const fetchAllUser = async (props: FetchAllUserProps) => {
         break;
     }
 
-    const allUsers = await User.find(query).sort(sortOptions).limit(pageSize);
+    const allUsers = await User.find(query)
+      .limit(pageSize)
+      .skip((page - 1) * pageSize)
+      .sort(sortOptions);
 
-    return allUsers;
+    const totalCountUser = await User.countDocuments(query);
+
+    return { allUsers, totalCountUser };
   } catch (err) {
     console.log("ERROR_FETCH_ALL_USER_ACTION", err);
     throw err;
@@ -193,7 +198,7 @@ export const fetchAllUserSavedQuestions = async (
   try {
     connectToDatabase();
 
-    const { userId, searchQuery, filter } = params;
+    const { userId, searchQuery, filter, pageSize = 5, page = 1 } = params;
 
     const query: FilterQuery<typeof Question> = {};
 
@@ -233,24 +238,40 @@ export const fetchAllUserSavedQuestions = async (
       path: "questions",
       match: query,
       options: {
+        limit: pageSize,
+        skip: (page - 1) * pageSize,
         sort: sortOptions,
+        populate: [
+          { path: "tags", model: tagModel, select: "_id name" },
+          {
+            path: "author",
+            model: User,
+            select: "_id clerkId name avatar",
+          },
+        ],
       },
-      populate: [
-        { path: "tags", model: tagModel, select: "_id name" },
-        {
-          path: "author",
-          model: User,
-          select: "_id clerkId name avatar",
-        },
-      ],
+
     });
+
+    const totalQuestions = await User.aggregate([
+      {
+        $match: {_id: new mongoose.Types.ObjectId(userId)},
+
+      },
+      {
+        $project: {
+          numberOfQuestions: {$size: '$questions',}
+        }
+      }
+    ])
 
     if (!currentUser) {
       throw new Error("Some error occured!.");
     }
 
     const savedQuestions = currentUser.questions;
-    return { questions: savedQuestions };
+
+    return { questions: savedQuestions, totalQuestions: totalQuestions[0].numberOfQuestions };
   } catch (err) {
     console.log("ERROR_FETCH_ALL_USER_SAVED_QUESTION_ACTION", err);
     throw err;

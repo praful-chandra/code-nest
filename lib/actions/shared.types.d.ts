@@ -64,6 +64,8 @@ export interface ViewQuestionParams {
 export interface FetchTagByIdProps {
   tagId: string;
   searchQuery?: string;
+  page?: number;
+  pageSize?: number;
 }
 
 export interface GetProfileByIdProps {

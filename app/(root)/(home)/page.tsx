@@ -9,13 +9,17 @@ import NoResult from "@/components/shared/NoResult";
 import { getQuestions } from "@/lib/actions/question.action";
 import { QuestionType } from "@/types/primitive";
 import { SearchParamsProps } from "@/types";
+import PaginationComp from "@/components/shared/Pagination";
 
 const HomePage = async ({ searchParams }: SearchParamsProps) => {
   const questions = (await getQuestions({
     searchQuery: searchParams?.query,
     filter: searchParams?.filter,
+    page: Number(searchParams?.page),
+    pageSize: 5,
   })) as unknown as {
     questions: QuestionType[];
+    totalQuestions: number;
   };
 
   return (
@@ -62,6 +66,11 @@ const HomePage = async ({ searchParams }: SearchParamsProps) => {
           />
         )}
       </div>
+      <PaginationComp
+        className="mt-10"
+        totalItems={questions.totalQuestions}
+        itemsPerPage={5}
+      />
     </>
   );
 };

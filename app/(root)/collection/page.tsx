@@ -7,14 +7,17 @@ import { QuestionType } from "@/types/primitive";
 import { fetchAllUserSavedQuestions } from "@/lib/actions/user.action";
 import { getCurrentProfile } from "@/lib/currentProfile";
 import { SearchParamsProps } from "@/types";
+import PaginationComp from "@/components/shared/Pagination";
 
 const Page = async ({ searchParams }: SearchParamsProps) => {
   const currentProfile = await getCurrentProfile();
 
-  const questions = await fetchAllUserSavedQuestions({
+  const questionQueryResult = await fetchAllUserSavedQuestions({
     userId: currentProfile?._id,
     searchQuery: searchParams?.query,
     filter: searchParams?.filter,
+    pageSize: 5,
+    page: Number(searchParams?.page),
   });
 
   return (
@@ -35,8 +38,8 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
       </div>
 
       <div className="mt-10">
-        {questions?.questions?.length ? (
-          questions?.questions.map((que: QuestionType) => (
+        {questionQueryResult?.questions?.length ? (
+          questionQueryResult?.questions?.map((que: QuestionType) => (
             <QuestionCard question={que} key={que._id} />
           ))
         ) : (
@@ -50,6 +53,11 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
           />
         )}
       </div>
+      <PaginationComp
+        className="mt-10"
+        itemsPerPage={5}
+        totalItems={questionQueryResult?.totalQuestions}
+      />
     </>
   );
 };

@@ -78,7 +78,7 @@ export async function getQuestions(params: GetQuestionsParams) {
   try {
     connectToDatabase();
 
-    const { searchQuery, filter } = params;
+    const { searchQuery, filter, page = 1, pageSize = 10 } = params;
 
     const query: FilterQuery<typeof Question> = {};
 
@@ -115,15 +115,19 @@ export async function getQuestions(params: GetQuestionsParams) {
       },
     ];
 
+    const totalQuestions = await Question.countDocuments(query);
+
     const questions = await Question.find(query)
       .populate({
         path: "tags",
         model: tagModel,
       })
       .populate({ path: "author", model: userModel })
+      .limit(pageSize)
+      .skip((page - 1) * pageSize)
       .sort(sortOptions);
 
-    return { questions };
+    return { questions, totalQuestions };
   } catch (err) {
     console.log("ERROR_GET_QUESTIONS:", err);
     throw err;
@@ -273,6 +277,16 @@ export const deleteQuestion = async (params: DeleteQuestionProps) => {
     await Answer.updateMany(
       { question: questionId },
       { isDeleted: true, deletedAt: Date.now() }
+    );
+
+    await tagModel.updateMany(
+        { question: questionId },
+         { $pull: { questions: questionId }}
+    )
+
+    await userModel.updateMany(
+        { question: questionId },
+        { $pull: { questions: questionId }}
     );
 
     revalidatePath(path);
