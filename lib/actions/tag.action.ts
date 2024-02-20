@@ -5,7 +5,7 @@ import {
   FetchTagByIdProps,
   FetchUserTagsProps,
 } from "./shared.types";
-import { FilterQuery } from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 import Question from "@/database/question.model";
 import { TagFiltersEnums } from "@/constants/filters";
 
@@ -76,7 +76,7 @@ export const fetchTagById = async (props: FetchTagByIdProps) => {
   try {
     connectToDatabase();
 
-    const { tagId, searchQuery } = props;
+    const { tagId, searchQuery,page = 1,pageSize = 5 } = props;
 
     const query: FilterQuery<typeof Question> = {};
 
@@ -101,10 +101,24 @@ export const fetchTagById = async (props: FetchTagByIdProps) => {
       options: {
         sort: { createdAt: -1 },
         populate: [{ path: "author" }, { path: "tags" }],
+        limit: pageSize,
+        skip: (page - 1) * pageSize,
       },
     });
 
-    return tag;
+    const totalTags = await tagModel.aggregate([
+      {
+        $match: {_id: new mongoose.Types.ObjectId(tagId)},
+
+      },
+      {
+        $project: {
+          numberOfQuestions: {$size: '$questions',}
+        }
+      }
+    ])
+
+    return {tag, totalTags: totalTags[0].numberOfQuestions};
   } catch (err) {
     console.log("ERROR_FETCH_TAG_BY_ID_ACTION", err);
     throw err;

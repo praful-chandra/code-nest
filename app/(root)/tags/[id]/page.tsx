@@ -8,6 +8,7 @@ import { fetchTagById } from "@/lib/actions/tag.action";
 import { SearchParamsType } from "@/types";
 import { QuestionType, TagType } from "@/types/primitive";
 import React from "react";
+import PaginationComp from "@/components/shared/Pagination";
 
 type ParamsType = {
   id: string;
@@ -22,22 +23,26 @@ const Page = async ({
 }) => {
   const { id: tagId } = params;
 
-  const currentTag = (await fetchTagById({
+  const {tag,totalTags} = (await fetchTagById({
     tagId,
     searchQuery: searchParams?.query,
-  })) as TagType;
-  console.log({ currentTag });
+      pageSize: 5,
+      page: Number( searchParams?.page),
+  })) as {
+      tag: TagType,
+      totalTags: number;
+  };
 
   return (
     <div>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
-        <h1 className="h1-bold text-dark100_light900">{currentTag?.name}</h1>
+        <h1 className="h1-bold text-dark100_light900">{tag?.name}</h1>
       </div>
 
       <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearch
           name="searchQuestions"
-          placeHolder={`Search Questions in ${currentTag?.name} `}
+          placeHolder={`Search Questions in ${tag?.name} `}
         />
         <div className="hidden max-md:block">
           <Filters
@@ -51,8 +56,8 @@ const Page = async ({
         <DesktopFilters />
       </div>
       <div className="mt-10">
-        {currentTag?.questions?.length ? (
-          (currentTag?.questions as unknown as QuestionType[]).map(
+        {tag?.questions?.length ? (
+          (tag?.questions as unknown as QuestionType[]).map(
             (que: QuestionType) => <QuestionCard question={que} key={que._id} />
           )
         ) : (
@@ -66,6 +71,12 @@ const Page = async ({
           />
         )}
       </div>
+        <PaginationComp
+            className="mt-10"
+            itemsPerPage={5}
+            totalItems={totalTags}
+
+        />
     </div>
   );
 };

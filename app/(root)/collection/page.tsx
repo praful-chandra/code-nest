@@ -38,8 +38,8 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
       </div>
 
       <div className="mt-10">
-        {questionQueryResult?.questions?.questions?.length ? (
-          questionQueryResult?.questions?.questions.map((que: QuestionType) => (
+        {questionQueryResult?.questions?.length ? (
+          questionQueryResult?.questions?.map((que: QuestionType) => (
             <QuestionCard question={que} key={que._id} />
           ))
         ) : (
@@ -55,7 +55,7 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
       </div>
       <PaginationComp
         className="mt-10"
-        itemsPerPage={9}
+        itemsPerPage={5}
         totalItems={questionQueryResult?.totalQuestions}
       />
     </>

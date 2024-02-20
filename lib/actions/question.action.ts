@@ -279,6 +279,16 @@ export const deleteQuestion = async (params: DeleteQuestionProps) => {
       { isDeleted: true, deletedAt: Date.now() }
     );
 
+    await tagModel.updateMany(
+        { question: questionId },
+         { $pull: { questions: questionId }}
+    )
+
+    await userModel.updateMany(
+        { question: questionId },
+        { $pull: { questions: questionId }}
+    );
+
     revalidatePath(path);
   } catch (err) {
     console.log("ERROR_DELETE_QUESTION:", err);

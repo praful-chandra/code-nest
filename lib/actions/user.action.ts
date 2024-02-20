@@ -1,6 +1,6 @@
 "use server";
 
-import { FilterQuery } from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 import { connectToDatabase } from "../mongoose";
 import User from "@/database/user.model";
 import {
@@ -241,20 +241,29 @@ export const fetchAllUserSavedQuestions = async (
         limit: pageSize,
         skip: (page - 1) * pageSize,
         sort: sortOptions,
+        populate: [
+          { path: "tags", model: tagModel, select: "_id name" },
+          {
+            path: "author",
+            model: User,
+            select: "_id clerkId name avatar",
+          },
+        ],
       },
-      populate: [
-        { path: "tags", model: tagModel, select: "_id name" },
-        {
-          path: "author",
-          model: User,
-          select: "_id clerkId name avatar",
-        },
-      ],
+
     });
 
-    const totalQuestions = await User.findById(userId).countDocuments({
-      path: "questions",
-    });
+    const totalQuestions = await User.aggregate([
+      {
+        $match: {_id: new mongoose.Types.ObjectId(userId)},
+
+      },
+      {
+        $project: {
+          numberOfQuestions: {$size: '$questions',}
+        }
+      }
+    ])
 
     if (!currentUser) {
       throw new Error("Some error occured!.");
@@ -262,7 +271,7 @@ export const fetchAllUserSavedQuestions = async (
 
     const savedQuestions = currentUser.questions;
 
-    return { questions: savedQuestions, totalQuestions };
+    return { questions: savedQuestions, totalQuestions: totalQuestions[0].numberOfQuestions };
   } catch (err) {
     console.log("ERROR_FETCH_ALL_USER_SAVED_QUESTION_ACTION", err);
     throw err;
