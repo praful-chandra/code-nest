@@ -53,7 +53,8 @@ const PaginationLink = ({
         variant: "outline",
         size,
       }),
-      isActive ? "primary-gradient text-slate-50" : "",
+      isActive ? "primary-gradient" : "",
+      "dark:text-slate-50 text-slate-900 light-border-2",
       className
     )}
     {...props}
@@ -105,10 +106,13 @@ const PaginationEllipsis = ({
 }: React.ComponentProps<"span">) => (
   <span
     aria-hidden
-    className={cn("flex h-9 w-9 items-center justify-center", className)}
+    className={cn(
+      "flex h-9 w-9 items-center justify-center dark:text-slate-50 text-slate-900",
+      className
+    )}
     {...props}
   >
-    <MoreHorizontal className="h-4 w-4" />
+    <MoreHorizontal className="h-4 w-4 text-slate-900 dark:text-slate-50" />
     <span className="sr-only">More pages</span>
   </span>
 );
