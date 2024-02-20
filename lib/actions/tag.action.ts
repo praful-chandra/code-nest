@@ -26,7 +26,7 @@ export const fetchAllTags = async (props: FetchAllTagsProps) => {
   try {
     connectToDatabase();
 
-    const { pageSize = 10, searchQuery, filter } = props;
+    const { pageSize = 9, page = 1, searchQuery, filter } = props;
 
     const query: FilterQuery<typeof tagModel> = {};
 
@@ -59,10 +59,13 @@ export const fetchAllTags = async (props: FetchAllTagsProps) => {
 
     const allTags = await tagModel
       .find(query)
-      .sort(sortOptions)
-      .limit(pageSize);
+      .limit(pageSize)
+      .skip((page - 1) * pageSize)
+      .sort(sortOptions);
 
-    return allTags;
+    const totalCountTags = await tagModel.countDocuments(query);
+
+    return { allTags, totalCountTags };
   } catch (err) {
     console.log("ERROR_FETCH_ALL_TAGS_ACTION", err);
     throw err;

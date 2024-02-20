@@ -51,6 +51,7 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
       </section>
 
       <PaginationComp
+        className="mt-10"
         itemsPerPage={6}
         totalItems={usersQueryResult?.totalCountUser}
       />

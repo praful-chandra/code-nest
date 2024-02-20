@@ -1,5 +1,6 @@
 import Filters from "@/components/shared/Filters";
 import NoResult from "@/components/shared/NoResult";
+import PaginationComp from "@/components/shared/Pagination";
 import Tag from "@/components/shared/Tag";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { tagFilters } from "@/constants/filters";
@@ -10,10 +11,15 @@ import Link from "next/link";
 import React from "react";
 
 const Page = async ({ searchParams }: SearchParamsProps) => {
-  const allTags: TagType[] = await fetchAllTags({
+  const tagQueryResult = (await fetchAllTags({
     searchQuery: searchParams?.query,
     filter: searchParams?.filter,
-  });
+    pageSize: 9,
+    page: Number(searchParams?.page),
+  })) as {
+    allTags: TagType[];
+    totalCountTags: number;
+  };
 
   return (
     <>
@@ -28,9 +34,9 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
         </div>
       </div>
 
-      {!!allTags?.length && (
+      {!!tagQueryResult?.allTags?.length && (
         <section className="mt-12 flex flex-wrap gap-4">
-          {allTags?.map((tag) => (
+          {tagQueryResult?.allTags?.map((tag) => (
             <Link
               href={`/tags/${tag._id}`}
               key={tag._id}
@@ -50,7 +56,7 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
         </section>
       )}
 
-      {!allTags?.length && (
+      {!tagQueryResult?.allTags?.length && (
         <NoResult
           title="No Tags Found"
           content="It looks like there are no tags found."
@@ -58,6 +64,12 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
           linkText="Ask a question"
         />
       )}
+
+      <PaginationComp
+        className="mt-10"
+        itemsPerPage={9}
+        totalItems={tagQueryResult?.totalCountTags}
+      />
     </>
   );
 };
