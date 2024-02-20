@@ -99,7 +99,7 @@ export const fetchAllUser = async (props: FetchAllUserProps) => {
   try {
     connectToDatabase();
 
-    const { pageSize = 10, searchQuery, filter } = props;
+    const { pageSize = 6, page = 1, searchQuery, filter } = props;
 
     const query: FilterQuery<typeof User> = {};
 
@@ -134,9 +134,14 @@ export const fetchAllUser = async (props: FetchAllUserProps) => {
         break;
     }
 
-    const allUsers = await User.find(query).sort(sortOptions).limit(pageSize);
+    const allUsers = await User.find(query)
+      .limit(pageSize)
+      .skip((page - 1) * pageSize)
+      .sort(sortOptions);
 
-    return allUsers;
+    const totalCountUser = await User.countDocuments(query);
+
+    return { allUsers, totalCountUser };
   } catch (err) {
     console.log("ERROR_FETCH_ALL_USER_ACTION", err);
     throw err;
