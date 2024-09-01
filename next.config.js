@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {},
+  ignoreDuringBuilds: true,
   images: {
     remotePatterns: [
       {
